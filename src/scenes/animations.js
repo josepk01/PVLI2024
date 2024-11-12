@@ -1,46 +1,62 @@
-export default class Animations extends Phaser.Scene {
+// src/scenes/animations.js
+export class Animations extends Phaser.Scene {
     constructor() {
-        super({ key: 'Animations', active: true });
+        super('animations');
     }
 
-    preload() {
-        // -- Sonido
-            //this.load.audio('background_music', 'assets/sounds/background_music.mp3');
-            //this.load.audio('hit_sound', 'assets/sounds/hit_sound.mp3');
+        preload() {
+        // Cargar imágenes
+        this.load.image('icono', 'assets/images/icons/icono.png');
+console.log('entro');
+        // Cargar spritesheets con animaciones de 2 frames
+        // this.load.spritesheet('abyss_necklace', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyss necklace/SpriteSheet/SpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
+        // this.load.spritesheet('abyssal_glass', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyssal glass/SpriteSheet/SpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
+        // this.load.spritesheet('abyssal_lamp', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyssal lamp/SpriteSheet/SpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
+        // this.load.spritesheet('abyssal_mask', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyssal Mask/SpriteSheet/SpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
+        // this.load.spritesheet('abyssal_orb', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyssal orb/SpriteSheet/SpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
         
-        // -- Imágenes
-            // this.load.image('player_idle', 'assets/images/player_idle.png');
-            // this.load.spritesheet('player_run', 'assets/images/player_run.png', { frameWidth: 32, frameHeight: 32 });
-            // this.load.spritesheet('boss_attack', 'assets/images/boss_attack.png', { frameWidth: 64, frameHeight: 64 });
+        // Cargar sonidos
+        // this.load.audio('background_music', 'assets/sounds/background_music.mp3');
+
+        // Animaciones para los spritesheets de 2 frames
+        // this.anims.create({
+        //     key: 'necklace_idle',
+        //     frames: this.anims.generateFrameNumbers('abyss_necklace', { start: 0, end: 1 }),
+        //     frameRate: 2,
+        //     repeat: -1
+        // });
+
+    //     this.anims.create({
+    //         key: 'glass_idle',
+    //         frames: this.anims.generateFrameNumbers('abyssal_glass', { start: 0, end: 1 }),
+    //         frameRate: 2,
+    //         repeat: -1
+    //     });
+
+    //     this.anims.create({
+    //         key: 'lamp_idle',
+    //         frames: this.anims.generateFrameNumbers('abyssal_lamp', { start: 0, end: 1 }),
+    //         frameRate: 2,
+    //         repeat: -1
+    //     });
+
+    //     this.anims.create({
+    //         key: 'mask_idle',
+    //         frames: this.anims.generateFrameNumbers('abyssal_mask', { start: 0, end: 1 }),
+    //         frameRate: 2,
+    //         repeat: -1
+    //     });
+
+    //     this.anims.create({
+    //         key: 'orb_idle',
+    //         frames: this.anims.generateFrameNumbers('abyssal_orb', { start: 0, end: 1 }),
+    //         frameRate: 2,
+    //         repeat: -1
+    //     });
     }
 
     create() {
-        // Crear animaciones centralizadas aquí
-
-        // -- Animaciones del Jugador
-        this.anims.create({
-            key: 'player_idle',
-            frames: [{ key: 'player_idle' }],
-            frameRate: 10,
-            repeat: -1,
-        });
-
-        this.anims.create({
-            key: 'player_run',
-            frames: this.anims.generateFrameNumbers('player_run', { start: 0, end: 5 }),
-            frameRate: 10,
-            repeat: -1,
-        });
-
-        // -- Animaciones de los Jefes
-        this.anims.create({
-            key: 'boss_attack',
-            frames: this.anims.generateFrameNumbers('boss_attack', { start: 0, end: 4 }),
-            frameRate: 8,
-            repeat: -1,
-        });
-
-        // Iniciar la escena de título
-        this.scene.start('TitleScreen');
+        // Define animations here if needed
+        this.scene.start('titlescreen');
     }
 }

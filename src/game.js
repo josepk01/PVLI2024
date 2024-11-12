@@ -1,30 +1,27 @@
-import TitleScreen from './scenes/titlescreen.js';
-import Level1 from './scenes/level1.js';
-import HUD from './scenes/hud.js';
-import Animations from './scenes/animations.js';
-
-let config = {
+import { Animations } from './scenes/animations.js';
+import {TitleScreen} from './scenes/titlescreen.js';
+import {MainLevels} from './scenes/mainlevels.js';
+import { Level1 } from './scenes/level1.js';
+import { Level2 } from './scenes/level2.js';
+import { Level3 } from './scenes/level3.js';
+import { OptionsMenu } from './scenes/optionsmenu.js';
+const config = {
     type: Phaser.AUTO,
-    parent: 'juego',
     width: 800,
     height: 600,
-    backgroundColor: '#000',
-    scene: [Animations, TitleScreen, Level1, HUD],
+    pixelArt: true,
+    parent: "game-container",
+    scale: {
+		autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+    },
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 500 },
+            gravity: { y: 300 },
             debug: false
         }
     },
-    scale: {
-        mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-    }
+    scene: [Animations, TitleScreen, MainLevels, Level1, Level2, Level3]
 };
 
-let game = new Phaser.Game(config);
-
-window.addEventListener('resize', () => {
-    game.scale.resize(window.innerWidth, window.innerHeight);
-});
+const game = new Phaser.Game(config);

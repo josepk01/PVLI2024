@@ -1,26 +1,13 @@
-import Player from '../entities/player.js';
-import Enemy from '../entities/enemy.js';
-
-export default class Level1 extends Phaser.Scene {
+export class Level1 extends Phaser.Scene {
     constructor() {
-        super({ key: 'Level1' });
-    }
-
-    preload() {
-        this.load.image('background', 'assets/images/level1_background.png');
+        super('level1');
     }
 
     create() {
-        this.add.image(400, 300, 'background');
+        this.add.text(300, 200, 'Nivel 1', { fontSize: '32px', fill: '#FFF' });
 
-        // Crear jugador y usar animación `player_run`
-        this.player = new Player(this, 100, 500);
-        this.player.play('player_run');
-
-        // Crear enemigo de ejemplo
-        this.enemy = new Enemy(this, 600, 500);
-        this.enemy.play('boss_attack');
-
-        this.scene.launch('HUD');
+        this.add.text(300, 500, 'Volver a Selección de Nivel', { fontSize: '24px', fill: '#FFF' })
+            .setInteractive()
+            .on('pointerdown', () => this.scene.start('mainlevels'));
     }
 }

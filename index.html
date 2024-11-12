@@ -4,8 +4,17 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pixel Paradox - Bullet Hell</title>
+        <link rel="icon" href="./assets/images/icons/icono.png" type="image/x-icon">
         <link rel="stylesheet" href="./css/game.css">
         <script src="./lib/phaser.js"></script>
+        <script>
+            // Guardar puntuaciones en localStorage
+            window.onload = function() {
+                if (!localStorage.getItem('highScores')) {
+                    localStorage.setItem('highScores', JSON.stringify([]));
+                }
+            };
+        </script>
     </head>
 <body>
 
@@ -14,11 +23,9 @@
         <p class="description">Un juego de acción y plataformas 2D desarrollado por Bullet Hell</p>
     </header>
 
-    <section>
-        <canvas id="juego"></canvas>
+    <section id="game-container">
+        <script src="./src/game.js" type="module"></script>
     </section>
-    
-    <script src="./src/game.js" type="module"></script>
 
     <section class="authors">
         <h2>Autores y Créditos</h2>
