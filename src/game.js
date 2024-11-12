@@ -7,12 +7,13 @@ import { Level3 } from './scenes/level3.js';
 import { OptionsMenu } from './scenes/optionsmenu.js';
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1600,
+    height: 800,
     pixelArt: true,
     parent: "game-container",
     scale: {
-		autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
     },
     physics: {
         default: 'arcade',
