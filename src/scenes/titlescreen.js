@@ -3,9 +3,6 @@ export class TitleScreen extends Phaser.Scene {
         super('titlescreen');
     }
 
-    preload() {
-        this.load.image('title_bg', './assets/images/Menu_Img.png');
-    }
 
     create() {
         console.log('titulos');

@@ -24,15 +24,15 @@ export class MainLevels extends Phaser.Scene {
         // Título del mapa de niveles
         this.add.text(width * 0.25, height * 0.1, 'Mapa de Niveles', { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
 
-        // Crear iconos de nivel con posiciones relativas
-        const levelIcon1 = this.add.circle(width * 0.2, height * 0.4, 25, 0x6666ff).setInteractive({ useHandCursor: true });
-        levelIcon1.on('pointerdown', () => this.scene.start('level1'));
+        // Crear iconos de nivel utilizando las imágenes generadas
+        this.add.image(width * 0.2, height * 0.4, 'abyss_necklace').setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => this.scene.start('level1'));
 
-        const levelIcon2 = this.add.circle(width * 0.25, height * 0.5, 25, 0x6666ff).setInteractive({ useHandCursor: true });
-        levelIcon2.on('pointerdown', () => this.scene.start('level2'));
+        this.add.image(width * 0.25, height * 0.5, 'abyss_necklace').setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => this.scene.start('level2'));
 
-        const levelIcon3 = this.add.circle(width * 0.3, height * 0.6, 25, 0x6666ff).setInteractive({ useHandCursor: true });
-        levelIcon3.on('pointerdown', () => this.scene.start('level3'));
+        this.add.image(width * 0.3, height * 0.6, 'abyss_necklace').setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => this.scene.start('level3'));
 
         // Título de la sección de ranking
         this.add.text(width * 0.75, height * 0.05, 'Ranking', { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);

@@ -19,7 +19,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: false
+            debug: true
         }
     },
     scene: [Animations, TitleScreen, MainLevels, Level1, Level2, Level3]
