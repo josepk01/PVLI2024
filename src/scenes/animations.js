@@ -46,7 +46,8 @@ export class Animations extends Phaser.Scene {
             frameHeight: 32
         });
         //Balas
-        this.load.image('Player_Bullet', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyssal orb/Abyssal orb13.png');
+        this.load.image('Bullet', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyssal orb/Abyssal orb13.png');
+        this.load.image('Boss_Bullet', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyssal orb/Abyssal orb16.png');
 
         
         // Cargar spritesheets con animaciones Boss Berserk
@@ -90,13 +91,13 @@ export class Animations extends Phaser.Scene {
         });
         this.anims.create({
             key: 'boss_B_attack1_animation',
-            frames: this.anims.generateFrameNumbers('Boss_B_Attack1', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('boss_B_Attack_animation1', { start: 0, end: 3 }),
             frameRate: 5,
             repeat: -1
         });
         this.anims.create({
             key: 'boss_B_attack2_animation',
-            frames: this.anims.generateFrameNumbers('Boss_B_Attack2', { start: 0, end: 4 }),
+            frames: this.anims.generateFrameNumbers('boss_B_Attack_animation2', { start: 0, end: 4 }),
             frameRate: 5,
             repeat: -1
         });
@@ -128,7 +129,7 @@ export class Animations extends Phaser.Scene {
             key: 'boss_B_dead_animation',
             frames: this.anims.generateFrameNumbers('Boss_B_Dead', { start: 0, end: 3 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
 
         // Definir las animaciones del Boss Guerrero
@@ -178,11 +179,11 @@ export class Animations extends Phaser.Scene {
             key: 'boss_W_dead_animation',
             frames: this.anims.generateFrameNumbers('Boss_W_Dead', { start: 0, end: 3 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
 
 
         // Define animations here if needed
-        this.scene.start('titlescreen');
+        this.scene.start('level1');
     }
 }

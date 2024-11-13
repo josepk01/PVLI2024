@@ -1,5 +1,5 @@
-import Player from '../entities/player.js'; 
-import Boss from '../entities/Bosses/boss1.js';  
+import Player from '../entities/player.js';
+import Boss from '../entities/Bosses/boss1.js';
 
 export class Level1 extends Phaser.Scene {
     constructor() {
@@ -9,7 +9,7 @@ export class Level1 extends Phaser.Scene {
     create() {
         // Obtener dimensiones actuales de la pantalla
         const { width, height } = this.sys.game.scale.gameSize;
-        
+
         // Agregar la imagen de fondo y escalarla para que se ajuste a la pantalla
         const background = this.add.image(0, 0, 'fondo__temp_level1').setOrigin(0.5, 0.5);
         background.setDisplaySize(width, height);
@@ -38,12 +38,15 @@ export class Level1 extends Phaser.Scene {
 
         // Configurar la superposición entre las balas y el boss
         this.physics.add.overlap(this.player.bullets, this.boss, this.bossHit, null, this);
+
+        // Configurar la superposición entre las balas del boss y el jugador
+        this.physics.add.overlap(this.boss.bullets, this.player, this.playerHit, null, this);
     }
 
     update(time) {
         // Actualizar al jugador
         this.player.update(time);
-        
+
         // Actualizar al boss
         if (this.boss) {
             this.boss.update(time, this.player);
@@ -54,6 +57,13 @@ export class Level1 extends Phaser.Scene {
         if (boss instanceof Boss) {
             bullet.destroy(); // Destruir la bala
             boss.takeDamage(); // El boss toma daño
+        }
+    }
+
+    playerHit(player, bullet) {
+        if (player instanceof Player) {
+            bullet.destroy(); // Destruir la bala
+            player.takeDamage(); // El jugador toma daño
         }
     }
 }
