@@ -184,6 +184,6 @@ export class Animations extends Phaser.Scene {
 
 
         // Define animations here if needed
-        this.scene.start('level1');
+        this.scene.start('titlescreen');
     }
 }
