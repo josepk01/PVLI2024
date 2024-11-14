@@ -34,6 +34,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             classType: Bullet,
             runChildUpdate: true,
         });
+
     }
 
     update(time) {
@@ -91,8 +92,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         let bullet = this.bullets.get();
-        bullet.setTexture('Bullet');
         if (bullet) {
+            bullet.setTexture('Bullet');
             bullet.resetBullet(bulletX, bulletY, bulletVelocityX, bulletVelocityY);
         }
     }

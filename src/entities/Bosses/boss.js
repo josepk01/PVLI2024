@@ -1,6 +1,6 @@
 import Bullet from '../Balas/Bullet.js';
 
-export default class Boss1 extends Phaser.Physics.Arcade.Sprite {
+export default class Boss extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'Boss_B_Idle');
         scene.add.existing(this);
@@ -68,17 +68,17 @@ export default class Boss1 extends Phaser.Physics.Arcade.Sprite {
     }
 
     attack1(player) {
-        // this.play('boss_B_attack1_animation', true);
-        // for (let i = -2; i <= 2; i++) {
-        //     let bulletX = player.x + i * 40;
-        //     let bulletY = 0;
+        this.play('boss_B_attack1_animation', true);
+        for (let i = -2; i <= 2; i++) {
+            let bulletX = player.x + i * 40;
+            let bulletY = 0;
 
-        //     let bullet = this.bullets.get();
-        //     bullet.setTexture('Boss_Bullet');
-        //     if (bullet) {
-        //         bullet.resetBullet(bulletX, bulletY, 0, 300);
-        //     }
-        // }
+            let bullet = this.bullets.get();
+            bullet.setTexture('Boss_Bullet');
+            if (bullet) {
+                bullet.resetBullet(bulletX, bulletY, 0, 300);
+            }
+        }
     }
     attack2(player) {
         // Reproducir la animación de ataque 2

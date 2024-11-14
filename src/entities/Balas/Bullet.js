@@ -10,11 +10,14 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
         // Aplicar la velocidad inicial a la bala
         this.setVelocity(velocityX, velocityY);
 
-        // Establecer la duración de la bala (destruir después de salir de la pantalla)
+        // Habilitar colisiones con los límites del mundo y destruir si se sale del mundo
         this.setCollideWorldBounds(true);
-        this.on('worldbounds', () => {
-            this.setActive(false);
-            this.setVisible(false);
+        this.body.onWorldBounds = true;
+        this.scene.physics.world.on('worldbounds', (body) => {
+            if (body.gameObject === this) {
+                this.setActive(false);
+                this.setVisible(false);
+            }
         });
     }
 

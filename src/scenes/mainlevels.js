@@ -37,9 +37,11 @@ export class MainLevels extends Phaser.Scene {
         // Título de la sección de ranking
         this.add.text(width * 0.75, height * 0.05, 'Ranking', { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
 
-        // Lista de jugadores en la sección de ranking
+        // Cargar y mostrar las mejores puntuaciones
+        let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
         for (let i = 0; i < 5; i++) {
-            this.add.text(width * 0.75, height * 0.1 + i * 30, `Jugador ${i + 1}: Puntuación`, { fontSize: '20px', fill: '#FFF' }).setOrigin(0.5);
+            const scoreText = highScores[i] !== undefined ? `Jugador ${i + 1}: ${highScores[i]}` : '------------';
+            this.add.text(width * 0.75, height * 0.1 + i * 30, scoreText, { fontSize: '20px', fill: '#FFF' }).setOrigin(0.5);
         }
 
         // Título de la tienda
