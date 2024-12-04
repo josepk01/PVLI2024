@@ -1,0 +1,108 @@
+{
+    "items": [
+        {
+            "type": "abyss_necklace",
+            "texture": "abyss_necklace",
+            "cost": 100,
+            "damage": 0,
+            "health": 10,
+            "unlockAttacks": {
+                "attack1": false,
+                "attack2": false,
+                "attack3": false
+            },
+            "effectApplied": false
+        },
+        {
+            "type": "abyss_glass",
+            "texture": "abyss_glass",
+            "cost": 0,
+            "damage": 0,
+            "health": 0,
+            "unlockAttacks": {
+                "attack1": false,
+                "attack2": false,
+                "attack3": false
+            },
+            "effectApplied": false
+        },
+        {
+            "type": "abyss_lamp",
+            "texture": "abyss_lamp",
+            "cost": 0,
+            "damage": 0,
+            "health": 0,
+            "unlockAttacks": {
+                "attack1": false,
+                "attack2": false,
+                "attack3": false
+            },
+            "effectApplied": false
+        },
+        {
+            "type": "abyss_mask1",
+            "texture": "abyss_mask1",
+            "cost": 0,
+            "damage": 0,
+            "health": 0,
+            "unlockAttacks": {
+                "attack1": false,
+                "attack2": false,
+                "attack3": false
+            },
+            "effectApplied": false
+        },
+        {
+            "type": "abyss_mask2",
+            "texture": "abyss_mask2",
+            "cost": 0,
+            "damage": 0,
+            "health": 0,
+            "unlockAttacks": {
+                "attack1": false,
+                "attack2": false,
+                "attack3": false
+            },
+            "effectApplied": false
+        },
+        {
+            "type": "abyss_mask3",
+            "texture": "abyss_mask3",
+            "cost": 0,
+            "damage": 0,
+            "health": 0,
+            "unlockAttacks": {
+                "attack1": false,
+                "attack2": false,
+                "attack3": false
+            },
+            "effectApplied": false
+        },
+        {
+            "type": "abyss_orb1",
+            "texture": "abyss_orb1",
+            "cost": 0,
+            "damage": 0,
+            "health": 0,
+            "unlockAttacks": {
+                "attack1": false,
+                "attack2": false,
+                "attack3": false
+            },
+            "effectApplied": false
+        },
+        {
+            "type": "abyss_orb2",
+            "texture": "abyss_mask3",
+            "cost": 0,
+            "damage": 0,
+            "health": 0,
+            "unlockAttacks": {
+                "attack1": false,
+                "attack2": false,
+                "attack3": false
+            },
+            "effectApplied": false
+        }
+    ]
+}

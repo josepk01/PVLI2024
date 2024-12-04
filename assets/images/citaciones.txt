@@ -4,5 +4,6 @@ https://craftpix.net/freebies/free-orc-sprite-sheets-pixel-art/						craftpix-ne
 https://craftpix.net/freebies/free-war-pixel-art-2d-backgrounds/					craftpix-771800-free-war-pixel-art-2d-game-backgrounds
 https://assetstore.unity.com/packages/2d/environments/pixel-art-platformer-village-props-166114		Pixel Art Platformer - Village Props
 https://assetstore.unity.com/packages/2d/environments/pixel-art-platformer-dungeon-237109		Free Pixel Art Forest
-https://craftpix.net/freebies/free-war-pixel-art-2d-backgrounds/                                craftpix-771800-free-war-pixel-art-2d-game-backgrounds
-https://craftpix.net/freebies/free-pixel-art-fantasy-2d-battlegrounds/                           Pixel Art Fantasy 2D Battlegrounds
+https://craftpix.net/freebies/free-war-pixel-art-2d-backgrounds/                                	craftpix-771800-free-war-pixel-art-2d-game-backgrounds
+https://craftpix.net/freebies/free-pixel-art-fantasy-2d-battlegrounds/                          	Pixel Art Fantasy 2D Battlegrounds
+https://lowich.itch.io/pixelart-chests									Chest sprite

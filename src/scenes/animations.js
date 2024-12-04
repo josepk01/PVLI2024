@@ -7,10 +7,16 @@ export class Animations extends Phaser.Scene {
         preload() {
         // Cargar imágenes
         this.load.image('icono', 'assets/images/icons/icono.png');
+        this.load.image('trofeo', 'assets/images/trofeos.png');
         //Fondos
         this.load.image('title_bg', './assets/images/Menu_Img.png');
         this.load.image('fondo__temp_level1', 'assets/images/craftpix-771800-free-war-pixel-art-2d-game-backgrounds/War4/War4.png');
-
+        
+        // Cargar el spritesheet completo del cofre
+        this.load.spritesheet('chests', 'assets/images/chest_sprite/chestsAll.png', {
+            frameWidth: 112,
+            frameHeight: 112
+        });
 
         //Objetos       
         this.load.image('abyss_necklace', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyss necklace/Abyss necklace5.png', {
@@ -105,7 +111,7 @@ export class Animations extends Phaser.Scene {
             key: 'boss_B_hurt_animation',
             frames: this.anims.generateFrameNumbers('Boss_B_Hurt', { start: 0, end: 1 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 1
         });
         this.anims.create({
             key: 'boss_B_jump_animation',
@@ -181,7 +187,6 @@ export class Animations extends Phaser.Scene {
             frameRate: 5,
             repeat: 0
         });
-
 
         // Define animations here if needed
         this.scene.start('titlescreen');

@@ -1,13 +1,15 @@
 import Player from '../entities/player.js';
 import Boss from '../entities/Bosses/boss.js';
+import gameData from '../gameData.js';
 
 export class Level1 extends Phaser.Scene {
     constructor() {
         super('level1');
-        this.timer = 0; // Inicializar el temporizador en cero
+        // this.timer = 0; // Inicializar el temporizador en cero
     }
 
     create() {
+        this.timer = 0; // Inicializar el temporizador en cero
         // Obtener dimensiones actuales de la pantalla
         const { width, height } = this.sys.game.scale.gameSize;
 
@@ -61,7 +63,7 @@ export class Level1 extends Phaser.Scene {
         this.timerText.setText('Tiempo: ' + Math.floor(this.timer)); // Mostrar solo los segundos enteros
     }
 
-    bossHit(bullet, boss) {
+    bossHit(boss, bullet ) {
         if (boss instanceof Boss) {
             bullet.destroy(); // Destruir la bala
             boss.takeDamage(); // El boss toma daño
@@ -79,7 +81,7 @@ export class Level1 extends Phaser.Scene {
         if (player instanceof Player) {
             bullet.destroy(); // Destruir la bala
             player.takeDamage(); // El jugador toma daño
-
+            console.log(player.health);
             if (player.health <= 0) {
                 // Si el jugador muere, la puntuación es 0
                 this.saveScore(0);
@@ -88,19 +90,35 @@ export class Level1 extends Phaser.Scene {
     }
 
     saveScore(score) {
-        let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
-        
+        // Utilizar el nombre de la escena actual para identificar el nivel
+        const levelKey = this.scene.key;
+    
+        // Cargar puntuaciones previas del nivel actual
+        let highScores = JSON.parse(localStorage.getItem(`highScores_${levelKey}`)) || [];
+    
         // Añadir la nueva puntuación
         highScores.push(score);
-
+    
         // Ordenar las puntuaciones de mayor a menor y quedarnos solo con las 5 mejores
         highScores.sort((a, b) => b - a);
         highScores = highScores.slice(0, 5);
-
+    
         // Guardar las puntuaciones actualizadas en localStorage
-        localStorage.setItem('highScores', JSON.stringify(highScores));
+        localStorage.setItem(`highScores_${levelKey}`, JSON.stringify(highScores));
+    
+        // Calcular el dinero obtenido basado en la puntuación
+        let moneyEarned = Math.max(10, Math.floor(score / 10));
+        gameData.playerMoney += moneyEarned;
+    
+        // Guardar el nuevo monto de dinero en localStorage
+        localStorage.setItem('playerMoney', gameData.playerMoney);
+    
+        // Registrar en la consola para confirmar el dinero añadido
+        console.log(`Puntuación del nivel: ${score}. Dinero ganado: ${moneyEarned}. Dinero total: ${gameData.playerMoney}`);
+    
         // Cambiar de escena
         this.scene.start('mainlevels');
     }
+    
 }
     

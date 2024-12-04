@@ -1,4 +1,5 @@
 import Bullet from './Balas/Bullet.js';
+import gameData from '../gameData.js';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
@@ -26,8 +27,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.facingDirection = 'right';
         this.isJumping = false;
 
-        // Vidas del jugador
-        this.health = 3;
+        // Vidas del jugador (usar las del gameData)
+        this.health = gameData.playerStats.health;
+
+        // Daño del jugador
+        this.damage = gameData.playerStats.damage;
 
         // Crear grupo para balas del jugador
         this.bullets = scene.physics.add.group({
@@ -35,6 +39,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             runChildUpdate: true,
         });
 
+        // Aplicar habilidades desbloqueadas
+        this.unlockAttacks = gameData.playerStats.unlockAttacks;
     }
 
     update(time) {
