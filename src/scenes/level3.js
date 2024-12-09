@@ -1,7 +1,7 @@
 import Player from '../entities/player.js';
 import Boss from '../entities/Bosses/boss.js';
 import gameData from '../gameData.js';
-
+import HUD from './Hud.js';
 export class Level3 extends Phaser.Scene {
     constructor() {
         super('level3');

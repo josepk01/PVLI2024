@@ -1,14 +1,15 @@
 import Player from '../entities/player.js';
 import Boss from '../entities/Bosses/boss.js';
 import gameData from '../gameData.js';
-
+import HUD from './Hud.js';
 export class Level1 extends Phaser.Scene {
     constructor() {
         super('level1');
-        // this.timer = 0; // Inicializar el temporizador en cero
     }
 
     create() {
+        // Crear HUD
+        this.hud = new HUD(this);
         this.timer = 0; // Inicializar el temporizador en cero
         // Obtener dimensiones actuales de la pantalla
         const { width, height } = this.sys.game.scale.gameSize;
@@ -52,7 +53,7 @@ export class Level1 extends Phaser.Scene {
     update(time, delta) {
         // Actualizar al jugador
         this.player.update(time);
-
+        this.hud.update(this.player, this.boss);    
         // Actualizar al boss
         if (this.boss) {
             this.boss.update(time, this.player);

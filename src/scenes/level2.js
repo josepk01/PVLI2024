@@ -1,7 +1,7 @@
 import Player from '../entities/player.js';
 import Boss from '../entities/Bosses/boss.js';
 import gameData from '../gameData.js';
-
+import HUD from './Hud.js';
 export class Level2 extends Phaser.Scene {
     constructor() {
         super('level2');
@@ -9,6 +9,8 @@ export class Level2 extends Phaser.Scene {
     }
 
     create() {
+        // Crear HUD
+    this.hud = new HUD(this);
         // Obtener dimensiones actuales de la pantalla
         const { width, height } = this.sys.game.scale.gameSize;
 
