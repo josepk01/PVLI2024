@@ -2,7 +2,7 @@ import Bullet from '../Balas/Bullet.js';
 
 export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'Boss_B_Idle');
+        super(scene, x, y, 'Boss_W_Idle');
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
@@ -10,7 +10,7 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
         this.setScale(2.25);
         this.health = 5; // Cambiar vida a 5
         this.facingDirection = 'left';
-        this.play('boss_B_idle_animation');
+        this.play('boss_W_idle_animation');
         this.setFlipX(true);
 
         this.isDead = false;
@@ -55,17 +55,17 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
         // Movimiento y ataques regulares
         if (Math.abs(player.x - this.x) <= 10) {
             this.setVelocityX(0);
-            this.play('boss_B_idle_animation', true);
+            this.play('boss_W_idle_animation', true);
         } else if (player.x < this.x) {
             this.setVelocityX(-100);
-            this.play('boss_B_run_animation', true);
+            this.play('boss_W_run_animation', true);
             if (this.facingDirection !== 'left') {
                 this.setFlipX(true);
                 this.facingDirection = 'left';
             }
         } else if (player.x > this.x) {
             this.setVelocityX(100);
-            this.play('boss_B_run_animation', true);
+            this.play('boss_W_run_animation', true);
             if (this.facingDirection !== 'right') {
                 this.setFlipX(false);
                 this.facingDirection = 'right';
@@ -88,7 +88,7 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
     }
 
     attack1(player) {
-        this.play('boss_B_attack1_animation', true);
+        this.play('boss_W_attack1_animation', true);
         for (let i = -2; i <= 2; i++) {
             let bulletX = player.x + i * 40;
             let bulletY = 0;
@@ -102,7 +102,7 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
     }
 
     attack2(player) {
-        this.play('boss_B_attack2_animation', true);
+        this.play('boss_W_attack2_animation', true);
 
         let bulletX = this.x;
         let bulletVelocityX = player.x > this.x ? 300 : -300;
@@ -122,7 +122,7 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
 
     jumpToEdge(player) {
         this.setVelocityX(0);
-        this.play('boss_B_jump_animation', true);
+        this.play('boss_W_jump_animation', true);
 
         const targetX = player.x < this.x ? 50 : this.screenWidth - 50;
         this.scene.tweens.add({
@@ -131,7 +131,7 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
             duration: 1000,
             ease: 'Power2',
             onComplete: () => {
-                this.play('boss_B_idle_animation', true);
+                this.play('boss_W_idle_animation', true);
             }
         });
     }
@@ -157,7 +157,7 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
-        this.play('boss_B_run_attack_animation', true);
+        this.play('boss_W_run_attack_animation', true);
     }
 
     takeDamage() {
@@ -172,17 +172,17 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
         if (this.health <= 0) {
             this.isDead = true;
             this.setVelocityX(0);
-            this.play('boss_B_dead_animation', false);
+            this.play('boss_W_dead_animation', false);
             this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
                 this.destroy();
             });
         } else {
             this.isPlayingHurtAnimation = true;
             this.setVelocityX(0);
-            this.play('boss_B_hurt_animation');
+            this.play('boss_W_hurt_animation');
     
             this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
-                if (anim.key === 'boss_B_hurt_animation') {
+                if (anim.key === 'boss_W_hurt_animation') {
                     this.isPlayingHurtAnimation = false;
                 }
             });

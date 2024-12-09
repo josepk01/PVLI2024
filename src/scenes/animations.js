@@ -147,13 +147,13 @@ export class Animations extends Phaser.Scene {
         });
         this.anims.create({
             key: 'boss_W_attack1_animation',
-            frames: this.anims.generateFrameNumbers('Boss_W_Attack1', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('boss_W_Attack_animation1', { start: 0, end: 3 }),
             frameRate: 5,
             repeat: -1
         });
         this.anims.create({
             key: 'boss_W_attack2_animation',
-            frames: this.anims.generateFrameNumbers('Boss_W_Attack2', { start: 0, end: 2 }),
+            frames: this.anims.generateFrameNumbers('boss_W_Attack_animation2', { start: 0, end: 2 }),
             frameRate: 5,
             repeat: -1
         });

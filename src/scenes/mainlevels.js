@@ -101,7 +101,7 @@ export class MainLevels extends Phaser.Scene {
             this.rankingLevelText = this.add.text(width * 0.75, height * 0.1, `Nivel ${this.currentLevel.charAt(this.currentLevel.length - 1)}`, { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5);
         } else {
             this.rankingLevelText.setPosition(width * 0.75, height * 0.1);
-            this.rankingLevelText.setText(`Nivel ${this.currentLevel.charAt(this.currentLevel.length - 1)}`);
+            this.rankingLevelText = this.add.text(width * 0.75, height * 0.1, `Nivel ${this.currentLevel.charAt(this.currentLevel.length - 1)}`, { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5);
         }
     
         // Mostrar el ranking del nivel seleccionado actualmente
