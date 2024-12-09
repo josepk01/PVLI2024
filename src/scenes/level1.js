@@ -8,44 +8,48 @@ export class Level1 extends Phaser.Scene {
     }
 
     create() {
-        // Crear HUD
-        this.hud = new HUD(this);
         this.timer = 0; // Inicializar el temporizador en cero
+    
         // Obtener dimensiones actuales de la pantalla
         const { width, height } = this.sys.game.scale.gameSize;
-
+    
         // Agregar la imagen de fondo y escalarla para que se ajuste a la pantalla
         const background = this.add.image(0, 0, 'fondo__temp_level1').setOrigin(0.5, 0.5);
         background.setDisplaySize(width, height);
         background.x = width / 2;
         background.y = height / 2;
-
+    
         // Título del Nivel 1
         this.add.text(300, 100, 'Nivel 1', { fontSize: '32px', fill: '#FFF' });
-
+    
         // Botón para volver a selección de nivel en la parte inferior derecha de la pantalla
         this.add.text(width - 150, height - 50, 'Volver a Selección de Nivel', { fontSize: '24px', fill: '#FFF' })
             .setInteractive()
             .setOrigin(1, 1)
             .on('pointerdown', () => this.scene.start('mainlevels'));
-
-        // Añadir el jugador
-        this.player = new Player(this, 400, 300);
+    
+        // Crear HUD
+        this.hud = new HUD(this);
+        // Suelo
+        const groundY = height - 50; // Ajusta según la altura de tu suelo
+    
+        // Añadir el jugador justo encima del suelo
+        this.player = new Player(this, 400, groundY - 50); // Ajusta el `y` para estar justo encima del suelo
         this.add.existing(this.player);
-
-        // Añadir el Boss
-        this.boss = new Boss(this, 800, 300);
+    
+        // Añadir el Boss justo encima del suelo
+        this.boss = new Boss(this, 800, groundY - 50); // Ajusta el `y` para estar justo encima del suelo
         this.add.existing(this.boss);
-
+    
         // Añadir colisiones entre el jugador y el boss
         this.physics.add.collider(this.player, this.boss);
-
+    
         // Configurar la superposición entre las balas del jugador y el boss
         this.physics.add.overlap(this.player.bullets, this.boss, this.bossHit, null, this);
-
+    
         // Configurar la superposición entre las balas del boss y el jugador
         this.physics.add.overlap(this.boss.bullets, this.player, this.playerHit, null, this);
-
+    
         // Crear el texto del temporizador en la parte superior central de la pantalla
         this.timerText = this.add.text(width / 2, 10, 'Tiempo: 0', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0);
     }
@@ -53,7 +57,10 @@ export class Level1 extends Phaser.Scene {
     update(time, delta) {
         // Actualizar al jugador
         this.player.update(time);
-        this.hud.update(this.player, this.boss);    
+        // Verificar que player y boss existan antes de actualizar el HUD
+        if (this.player && this.boss) {
+            this.hud.update(this.player, this.boss);
+        }    
         // Actualizar al boss
         if (this.boss) {
             this.boss.update(time, this.player);

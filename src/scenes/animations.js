@@ -11,7 +11,7 @@ export class Animations extends Phaser.Scene {
         //Fondos
         this.load.image('title_bg', './assets/images/Menu_Img.png');
         this.load.image('fondo__temp_level1', 'assets/images/craftpix-771800-free-war-pixel-art-2d-game-backgrounds/War4/War4.png');
-        
+        this.load.image('Menu_map', 'assets/images/Mapa_menu.png');  
         // Cargar el spritesheet completo del cofre
         this.load.spritesheet('chests', 'assets/images/chest_sprite/chestsAll.png', {
             frameWidth: 112,
@@ -22,7 +22,7 @@ export class Animations extends Phaser.Scene {
         this.load.image('abyss_necklace', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyss necklace/Abyss necklace5.png', {
             frameWidth: 32,
             frameHeight: 32
-        });        
+        });       
         this.load.image('abyss_glass', 'assets/images/1200 Icons RPG + Recolors - Free version/Abyssal glass/Abyssal glass20.png', {
             frameWidth: 32,
             frameHeight: 32
@@ -189,6 +189,7 @@ export class Animations extends Phaser.Scene {
         });
 
         // Define animations here if needed
-        this.scene.start('titlescreen');
+        //this.scene.start('titlescreen');
+        this.scene.start('mainlevels');
     }
 }

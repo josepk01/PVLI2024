@@ -20,7 +20,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             down: Phaser.Input.Keyboard.KeyCodes.S,
             right: Phaser.Input.Keyboard.KeyCodes.D
         });
-
+        this.maxHealth = gameData.playerStats.health;
         this.attackCooldown = 100; // Cooldown de 0.1 segundos (100 ms)
         this.lastAttackTime = 0;
         this.scene = scene;
@@ -28,7 +28,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isJumping = false;
 
         // Vidas del jugador (usar las del gameData)
-        this.health = gameData.playerStats.health;
+        this.health = this.maxHealth;
 
         // Daño del jugador
         this.damage = gameData.playerStats.damage;

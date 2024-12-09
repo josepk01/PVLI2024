@@ -63,13 +63,18 @@ export class MainLevels extends Phaser.Scene {
         const { width, height } = this.sys.game.scale.gameSize;
     
         // Crear fondo para cada sección con posiciones y tamaños relativos
-        const levelSelectionRect = this.add.rectangle(width * 0.25, height * 0.5, width * 0.5, height, 0x444444).setOrigin(0.5);
-        const rankingRect = this.add.rectangle(width * 0.75, height * 0.25, width * 0.5, height * 0.5, 0x333333).setOrigin(0.5);
+        this.levelSelectionRect = this.add.image(width, height, 'Menu_map').setDisplaySize(width, height ).setOrigin(1 , 1);
 
-        // Cambiar el fondo gris de la tienda por una imagen
-        this.storeBackground = this.add.image(width * 0.5, height * 0.5, 'chests').setDisplaySize(width * 0.5, height * 0.5).setOrigin(0.5);
-    
-        // Título del mapa de niveles
+        // Pone la imagen de la tienda
+        this.storeBackground = this.add.image(width, height, 'chests').setDisplaySize(width * 0.5, height * 0.7).setOrigin(1);
+        this.storeBackground.setTint(0x808080);
+
+        //Pone el ranking
+        this.rankingRect = this.add.image(width, height, 'trofeo').setDisplaySize(width * 0.5, height).setOrigin(1 , 1.1);
+        this.rankingRect.setTint(0x808080);
+
+
+        //Título del mapa de niveles
         this.add.text(width * 0.25, height * 0.1, 'Mapa de Niveles', { fontSize: '32px', fill: '#FFF' }).setOrigin(0.5);
     
         // Crear iconos de nivel y manejar eventos para mostrar puntuaciones
@@ -224,68 +229,6 @@ export class MainLevels extends Phaser.Scene {
         }
     }
     
-    // displayStoreItems() {
-    //     this.storeContainer.removeAll(); // Eliminar elementos anteriores
-    //     const itemsPerRow = 3; // Número de objetos por fila
-    //     const itemSize = 60; // Tamaño del área de cada objeto (para separación)
-    //     const startX = -itemSize; // Posición inicial en X
-    //     const startY = -100 + this.scrollOffset; // Posición inicial en Y, incluyendo el offset de scroll
-
-    //     this.itemsData.forEach((item, index) => {
-    //         const row = Math.floor(index / itemsPerRow);
-    //         const col = index % itemsPerRow;
-
-    //         // Posición de cada objeto en la tienda
-    //         const x = startX + col * itemSize * 2;
-    //         const y = startY + row * itemSize * 2;
-
-    //         // Comprobar si el objeto ya ha sido comprado
-    //         const isPurchased = gameData.purchasedItems.some(purchasedItem => purchasedItem.type === item.type);
-
-    //         // Crear imagen del objeto
-    //         const itemImage = this.add.image(x, y, item.texture)
-    //             .setOrigin(0.5)
-    //             .setInteractive({ useHandCursor: true });
-
-    //         // Aplicar escala y filtro en función de si el objeto ha sido comprado
-    //         if (isPurchased) {
-    //             itemImage.setScale(1.5);
-    //         } else {
-    //             itemImage.setScale(1.2); // 20% más pequeño si no está comprado
-    //             itemImage.setTint(0x808080); // Aplicar filtro gris para simular escala de grises
-    //         }
-
-    //         // Manejar evento del ratón sobre el objeto
-    //         itemImage.on('pointerover', () => {
-    //             if (!isPurchased) {
-    //                 itemImage.setScale(1.8); // Aumentar un 20% sobre el tamaño normal
-    //             }
-    //             this.itemDescriptionText.setText(`Efectos: Salud +${item.health}, Daño +${item.damage}`); // Mostrar descripción
-    //         });
-
-    //         // Manejar evento cuando el ratón sale del objeto
-    //         itemImage.on('pointerout', () => {
-    //             if (!isPurchased) {
-    //                 itemImage.setScale(1.2); // Volver a ser más pequeño si no ha sido comprado
-    //             }
-    //             this.itemDescriptionText.setText(''); // Limpiar descripción
-    //         });
-
-    //         // Manejar la compra solo si el objeto no ha sido comprado
-    //         if (!isPurchased) {
-    //             itemImage.on('pointerdown', () => this.purchaseItem(item));
-    //         }
-
-    //         // Crear el texto del precio debajo de la imagen
-    //         const priceText = this.add.text(x, y + 20, `${item.cost} €`, { fontSize: '16px', fill: '#FFF' }).setOrigin(0.5);
-
-    //         // Añadir imagen y precio al contenedor de la tienda
-    //         this.storeContainer.add([itemImage, priceText]);
-    //     });
-    // }
-
-
-
     scrollStore(direction) {
         // Ajustar el desplazamiento de la tienda con un límite para que no se pueda ir demasiado arriba o abajo
         this.scrollOffset += direction * 100; // Ajuste del valor de desplazamiento
