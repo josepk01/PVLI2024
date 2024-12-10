@@ -32,17 +32,28 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(time, player) {
-        if (!player || this.isDead || this.isPlayingHurtAnimation) {
-            return;
-        }
+        if (!player || this.isDead || this.isPlayingHurtAnimation || this.isPlayingAttackAnimation) {
+            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
+                if (anim.key === 'boss_B_attack1_animation') {
+                    this.isPlayingAttackAnimation = false; // Terminar el estado de ataque
+                }
+                else if (anim.key === 'boss_B_attack2_animation') {
+                    this.isPlayingAttackAnimation = false; // Terminar el estado de ataque
+                }
+            });
+            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
 
+            });
+            return; // No realizar acciones si el jefe está herido, atacando o muerto
+        }
+    
         // Realizar salto al 50% de vida
         if (this.health <= 2.5 && !this.specialAttackThresholds.jump) {
             this.specialAttackThresholds.jump = true;
             this.jumpToEdge(player);
             return;
         }
-
+    
         // Realizar ataque especial con balas al 25% de vida
         if (this.health <= 1.25 && !this.specialAttackThresholds.bullets) {
             if (Math.random() <= 0.25) {
@@ -51,7 +62,7 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
             }
             return;
         }
-
+    
         // Movimiento y ataques regulares
         if (Math.abs(player.x - this.x) <= 10) {
             this.setVelocityX(0);
@@ -71,7 +82,7 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
                 this.facingDirection = 'right';
             }
         }
-
+    
         if (time > this.lastAttackTime + this.attackCooldown) {
             this.chooseRandomAttack(player);
             this.lastAttackTime = time;
@@ -88,11 +99,13 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
     }
 
     attack1(player) {
+        this.isPlayingAttackAnimation = true; // Indicar que está atacando
         this.play('boss_B_attack1_animation', true);
+    
         for (let i = -2; i <= 2; i++) {
             let bulletX = player.x + i * 40;
             let bulletY = 0;
-
+    
             let bullet = this.bullets.get();
             bullet.setTexture('Boss_Bullet');
             if (bullet) {
@@ -100,18 +113,19 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
             }
         }
     }
-
+    
     attack2(player) {
+        this.isPlayingAttackAnimation = true; // Indicar que está atacando
         this.play('boss_B_attack2_animation', true);
-
+    
         let bulletX = this.x;
         let bulletVelocityX = player.x > this.x ? 300 : -300;
-
+    
         let baseBulletY = this.y + this.height / 2 + 40;
-
+    
         for (let i = 0; i < 5; i++) {
             let bulletY = baseBulletY - i * 40;
-
+    
             let bullet = this.bullets.get();
             if (bullet) {
                 bullet.setTexture('Boss_Bullet');
@@ -162,32 +176,37 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
 
     takeDamage() {
         if (this.isDead) return;
-    
+        this.isPlayingAttackAnimation = false;
         this.health -= 1;
-    
-        // Incrementar el contador de ataques recibidos
-        if (!this.hits) this.hits = 0;
-        this.hits += 1;
+        this.hits = (this.hits || 0) + 1; // Incrementar contador de hits al jefe
     
         if (this.health <= 0) {
             this.isDead = true;
             this.setVelocityX(0);
             this.play('boss_B_dead_animation', false);
-            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-                this.destroy();
+    
+            // Escuchar el evento de finalización de la animación de muerte
+            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
+                if (anim.key === 'boss_B_dead_animation') {
+                    this.emit('bossDead'); // Emitir un evento personalizado
+                    this.destroy();
+                }
             });
         } else {
             this.isPlayingHurtAnimation = true;
             this.setVelocityX(0);
+            this.setTint(0xff0000); // Filtro rojo durante animación de daño
             this.play('boss_B_hurt_animation');
     
             this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
                 if (anim.key === 'boss_B_hurt_animation') {
                     this.isPlayingHurtAnimation = false;
+                    this.clearTint(); // Quitar filtro rojo
                 }
             });
         }
     }
+    
     
     adjustHitbox() {
         // Ajustar el tamaño del hitbox del jefe

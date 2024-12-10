@@ -11,7 +11,8 @@ export class Animations extends Phaser.Scene {
         //Fondos
         this.load.image('title_bg', './assets/images/Menu_Img.png');
         this.load.image('fondo__temp_level1', 'assets/images/craftpix-771800-free-war-pixel-art-2d-game-backgrounds/War4/War4.png');
-        this.load.image('Menu_map', 'assets/images/Mapa_menu.png');  
+        this.load.image('Hacha', 'assets/images/craftpix-net-100504-free-orc-sprite-sheets-pixel-art/Orc_Warrior/hacha.png');
+        this.load.image('Menu_map', 'assets/images/Mapa_menu.png');   
         // Cargar el spritesheet completo del cofre
         this.load.spritesheet('chests', 'assets/images/chest_sprite/chestsAll.png', {
             frameWidth: 112,
@@ -99,37 +100,37 @@ export class Animations extends Phaser.Scene {
             key: 'boss_B_attack1_animation',
             frames: this.anims.generateFrameNumbers('boss_B_Attack_animation1', { start: 0, end: 3 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_B_attack2_animation',
             frames: this.anims.generateFrameNumbers('boss_B_Attack_animation2', { start: 0, end: 4 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_B_hurt_animation',
             frames: this.anims.generateFrameNumbers('Boss_B_Hurt', { start: 0, end: 1 }),
             frameRate: 5,
-            repeat: 1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_B_jump_animation',
             frames: this.anims.generateFrameNumbers('Boss_B_Jump', { start: 0, end: 4 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_B_run_animation',
             frames: this.anims.generateFrameNumbers('Boss_B_Run', { start: 0, end: 5 }),
-            frameRate: 5,
+            frameRate: 6,
             repeat: -1
         });
         this.anims.create({
             key: 'boss_B_run_attack_animation',
             frames: this.anims.generateFrameNumbers('Boss_B_Run_Attack', { start: 0, end: 4 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 1
         });
         this.anims.create({
             key: 'boss_B_dead_animation',
@@ -149,19 +150,19 @@ export class Animations extends Phaser.Scene {
             key: 'boss_W_attack1_animation',
             frames: this.anims.generateFrameNumbers('boss_W_Attack_animation1', { start: 0, end: 3 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_W_attack2_animation',
             frames: this.anims.generateFrameNumbers('boss_W_Attack_animation2', { start: 0, end: 2 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_W_hurt_animation',
             frames: this.anims.generateFrameNumbers('Boss_W_Hurt', { start: 0, end: 1 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_W_jump_animation',
@@ -179,7 +180,7 @@ export class Animations extends Phaser.Scene {
             key: 'boss_W_run_attack_animation',
             frames: this.anims.generateFrameNumbers('Boss_W_Run_Attack', { start: 0, end: 3 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 1
         });
         this.anims.create({
             key: 'boss_W_dead_animation',

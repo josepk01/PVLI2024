@@ -1,7 +1,7 @@
 import Player from '../entities/player.js';
+import Boss2 from '../entities/Bosses/boss2.js';
 import gameData from '../gameData.js';
 import HUD from './Hud.js';
-import Boss2 from '../entities/Bosses/boss2.js';
 export class Level2 extends Phaser.Scene {
     constructor() {
         super('level2');
@@ -20,7 +20,7 @@ export class Level2 extends Phaser.Scene {
         background.y = height / 2;
     
         // Título del Nivel 1
-        this.add.text(300, 100, 'Nivel 1', { fontSize: '32px', fill: '#FFF' });
+        this.add.text(300, 100, 'Nivel 2', { fontSize: '32px', fill: '#FFF' });
     
         // Botón para volver a selección de nivel en la parte inferior derecha de la pantalla
         this.add.text(width - 150, height - 50, 'Volver a Selección de Nivel', { fontSize: '24px', fill: '#FFF' })
@@ -47,11 +47,14 @@ export class Level2 extends Phaser.Scene {
         // Configurar la superposición entre las balas del jugador y el boss
         this.physics.add.overlap(this.player.bullets, this.boss, this.bossHit, null, this);
     
-        // Configurar la superposición entre las balas del boss y el jugador
-        this.physics.add.overlap(this.boss.bullets, this.player, this.playerHit, null, this);
-    
         // Crear el texto del temporizador en la parte superior central de la pantalla
         this.timerText = this.add.text(width / 2, 10, 'Tiempo: 0', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0);
+
+        // Escuchar el evento de muerte del Boss
+        this.boss.on('bossDead', () => {
+        const score = Math.max(0, Math.floor(1000 / this.timer));
+        this.saveScore(score);
+        });
     }
 
     update(time, delta) {
@@ -75,12 +78,6 @@ export class Level2 extends Phaser.Scene {
         if (boss instanceof Boss2) {
             bullet.destroy(); // Destruir la bala
             boss.takeDamage(); // El boss toma daño
-    
-            if (boss.health <= 0) {
-                // Calcular la puntuación al vencer al boss
-                const score = Math.max(0, Math.floor(1000 / this.timer));
-                this.saveScore(score);
-            }
         }
     }
     

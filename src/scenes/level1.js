@@ -52,6 +52,12 @@ export class Level1 extends Phaser.Scene {
     
         // Crear el texto del temporizador en la parte superior central de la pantalla
         this.timerText = this.add.text(width / 2, 10, 'Tiempo: 0', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0);
+
+         // Escuchar el evento de muerte del Boss
+        this.boss.on('bossDead', () => {
+            const score = Math.max(0, Math.floor(1000 / this.timer));
+            this.saveScore(score);
+        });
     }
 
     update(time, delta) {
@@ -75,12 +81,7 @@ export class Level1 extends Phaser.Scene {
         if (boss instanceof Boss) {
             bullet.destroy(); // Destruir la bala
             boss.takeDamage(); // El boss toma daño
-    
-            if (boss.health <= 0) {
-                // Calcular la puntuación al vencer al boss
-                const score = Math.max(0, Math.floor(1000 / this.timer));
-                this.saveScore(score);
-            }
+
         }
     }
     
