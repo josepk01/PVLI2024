@@ -14,7 +14,7 @@ export class Level3 extends Phaser.Scene {
         this.timer = 0;
         const { width, height } = this.sys.game.scale.gameSize;
 
-        const background = this.add.image(0, 0, 'fondo__temp_level1').setOrigin(0.5, 0.5);
+        const background = this.add.image(0, 0, 'fondo__temp_level3').setOrigin(0.5, 0.5);
         background.setDisplaySize(width, height);
         background.x = width / 2;
         background.y = height / 2;
@@ -52,7 +52,7 @@ export class Level3 extends Phaser.Scene {
     }
 
     update(time, delta) {
-        this.player.update(time);
+        this.player.update(time, this.boss, this.hud);
         if (this.player && this.boss) {
             this.hud.update(this.player, this.boss);
         }

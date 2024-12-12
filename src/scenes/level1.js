@@ -62,7 +62,7 @@ export class Level1 extends Phaser.Scene {
 
     update(time, delta) {
         // Actualizar al jugador
-        this.player.update(time);
+        this.player.update(time, this.boss, this.hud);
         // Verificar que player y boss existan antes de actualizar el HUD
         if (this.player && this.boss) {
             this.hud.update(this.player, this.boss);

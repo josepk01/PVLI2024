@@ -14,7 +14,7 @@ export class Level2 extends Phaser.Scene {
         const { width, height } = this.sys.game.scale.gameSize;
     
         // Agregar la imagen de fondo y escalarla para que se ajuste a la pantalla
-        const background = this.add.image(0, 0, 'fondo__temp_level1').setOrigin(0.5, 0.5);
+        const background = this.add.image(0, 0, 'fondo__temp_level2').setOrigin(0.5, 0.5);
         background.setDisplaySize(width, height);
         background.x = width / 2;
         background.y = height / 2;
@@ -62,8 +62,8 @@ export class Level2 extends Phaser.Scene {
 
     update(time, delta) {
         // Actualizar al jugador
-        this.player.update(time);
-        //console.log(this.player.x - this.boss.x )
+        this.player.update(time, this.boss, this.hud);
+                //console.log(this.player.x - this.boss.x )
         // Verificar que player y boss existan antes de actualizar el HUD
         if (this.player && this.boss) {
             this.hud.update(this.player, this.boss);

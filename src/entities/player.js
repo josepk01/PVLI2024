@@ -3,134 +3,191 @@ import gameData from '../gameData.js';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'player');
+        super(scene, x, y, 'Player1I_idle');
         scene.add.existing(this);
         scene.physics.add.existing(this);
-
+        this.play('Player1I_idle');
         this.setCollideWorldBounds(true);
         this.setGravityY(300);
         this.isknockback = false;
-        this.cursors = scene.input.keyboard.createCursorKeys();
-        this.shootKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-        // Añadir teclas WASD para el movimiento
+        this.specialDuration = 5000;
+        this.cursors = scene.input.keyboard.createCursorKeys(); // Para las flechas (dirección de disparo)
         this.keys = scene.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
             left: Phaser.Input.Keyboard.KeyCodes.A,
             down: Phaser.Input.Keyboard.KeyCodes.S,
-            right: Phaser.Input.Keyboard.KeyCodes.D
-        });
+            right: Phaser.Input.Keyboard.KeyCodes.D,
+            special: Phaser.Input.Keyboard.KeyCodes.Z
+        }); // Para WASD (movimiento)
+
+        this.shootKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
         this.maxHealth = gameData.playerStats.health;
         this.attackCooldown = 100; // Cooldown de 0.1 segundos (100 ms)
         this.lastAttackTime = 0;
+
         this.scene = scene;
         this.facingDirection = 'right';
         this.isJumping = false;
 
-        // Vidas del jugador (usar las del gameData)
-        this.health = 99999999;//this.maxHealth;
+        // Vidas del jugador
+        this.health = maxHealth;
 
         // Daño del jugador
         this.damage = gameData.playerStats.damage;
 
-        // Crear grupo para balas del jugador
+        // Crear grupo para balas
         this.bullets = scene.physics.add.group({
             classType: Bullet,
             runChildUpdate: true,
         });
-
+        this.adjustHitbox();
         // Aplicar habilidades desbloqueadas
         this.unlockAttacks = gameData.playerStats.unlockAttacks;
     }
 
-    update(time) {
-        if(!this.isknockback)
-        {
+    update(time, boss, hud) {
+        if (!this.isknockback) {
             this.body.setVelocityX(0);
-
-            // Movimiento a la izquierda
-            if (this.cursors.left.isDown || this.keys.left.isDown) {
-                this.body.setVelocityX(-200);
-                this.anims.play('player_move_left_temp', true);
-                this.facingDirection = 'left';
-                this.setFlipX(true);
-                this.isJumping = false;
-            }
-            // Movimiento a la derecha
-            else if (this.cursors.right.isDown || this.keys.right.isDown) {
-                this.body.setVelocityX(200);
-                this.anims.play('player_move_right_temp', true);
-                this.facingDirection = 'right';
-                this.setFlipX(false);
-                this.isJumping = false;
-            }
-            // En reposo (sin movimiento)
-            else {
-                this.anims.play('player_idle_temp', true);
+    
+            // Ataque (disparo) con SPACE
+            if (Phaser.Input.Keyboard.JustDown(this.shootKey) && time > this.lastAttackTime + this.attackCooldown) {
+                this.attack(boss);
+                this.lastAttackTime = time;
             }
     
-            // Salto
-            if ((this.cursors.up.isDown || this.keys.up.isDown) && this.body.onFloor()) {
+            // Movimiento con WASD
+            else if (this.keys.left.isDown) {
+                this.body.setVelocityX(-200);
+                this.anims.play('Player1C_run', true);
+                this.facingDirection = 'left';
+                this.setFlipX(true);
+            } else if (this.keys.right.isDown) {
+                this.body.setVelocityX(200);
+                this.anims.play('Player1C_run', true);
+                this.facingDirection = 'right';
+                this.setFlipX(false);
+            } else if (this.body.onFloor()) {
+                this.anims.play('Player1I_idle', true);
+            }
+    
+            // Salto con W
+            if (this.keys.up.isDown && this.body.onFloor()) {
                 this.body.setVelocityY(-660);
-                this.anims.play('player_jump_temp', true);
+                this.anims.play('Player1S_jump', true);
                 this.isJumping = true;
             }
     
-            // Ataque (disparo)
-            if (Phaser.Input.Keyboard.JustDown(this.shootKey) && time > this.lastAttackTime + this.attackCooldown) {
-                this.attack();
-                this.lastAttackTime = time;
+            // Activar ataque especial con Z
+            if (Phaser.Input.Keyboard.JustDown(this.keys.special)) {
+                this.activateSpecial(boss, hud);
             }
-        }
-        else {
+        } else {
+            // Manejo de knockback
             if (!this.knockbackStartTime) {
-                // Registrar el tiempo de inicio del knockback
                 this.knockbackStartTime = time;
             }
-        
-            // Verificar si han pasado 0.5 segundos desde el inicio del knockback
             if (time - this.knockbackStartTime >= 500) {
-                this.isknockback = false; // Desactivar knockback
-                this.knockbackStartTime = null; // Resetear el tiempo de inicio
+                this.isknockback = false;
+                this.knockbackStartTime = null;
             }
         }
-        
-            
     }
-
-    attack() {
-        this.anims.play('player_attack_temp', true);
-
+    activateSpecial(boss, hud) {
+        // Verificar si la barra especial está llena
+        if (boss.hits >= 3) {
+            // Verificar si el jugador tiene el objeto abyss_glass comprado
+            const hasAbyssGlass = gameData.purchasedItems.some(item => item.type === 'abyss_glass');
+    
+            if (hasAbyssGlass) {
+                // Activar el ataque especial
+                this.isSpecialActive = true;
+    
+                // Reiniciar la barra especial
+                boss.hits = 0;
+                hud.update(this, boss); // Actualizar el HUD para reflejar los cambios
+    
+                console.log('Autoapuntado activado con abyss_glass.');
+    
+                // Hacer que el efecto especial dure por `specialDuration`
+                this.scene.time.delayedCall(this.specialDuration, () => {
+                    this.isSpecialActive = false; // Desactivar después de 5 segundos
+                    console.log('Autoapuntado desactivado.');
+                });
+            } else {
+                console.log('No tienes abyss_glass, no puedes activar el ataque especial.');
+            }
+        } else {
+            console.log('La barra especial no está llena.');
+        }
+    }
+    
+    
+    attack(boss) {
         let bulletX = this.x;
         let bulletY = this.y;
         let bulletVelocityX = 0;
         let bulletVelocityY = 0;
-
-        if (this.isJumping) {
+    
+        if (this.cursors.up.isDown) {
+            // Disparar hacia arriba
             bulletY -= 20;
             bulletVelocityY = -600;
+            this.anims.play('Player1A_attackw', true);
+        } else if (this.cursors.down.isDown) {
+            // Disparar hacia abajo
+            bulletY += 20;
+            bulletVelocityY = 600;
+            this.anims.play('Player1A_attacks', true);
         } else {
+            // Disparar horizontalmente
             bulletX = this.facingDirection === 'right' ? this.x + 20 : this.x - 20;
             bulletVelocityX = this.facingDirection === 'right' ? 600 : -600;
+            this.anims.play('Player1A_attackd', true);
+    
+            // Realizar flip en la animación según la dirección del disparo
+            if (this.facingDirection === 'right') {
+                this.setFlipX(false); // Sin flip si dispara a la derecha
+            } else {
+                this.setFlipX(true); // Flip si dispara a la izquierda
+            }
         }
-
+    
+        // Modificar trayectoria si el ataque especial está activo
+        if (this.isSpecialActive && boss) {
+            const angleToBoss = Phaser.Math.Angle.Between(this.x, this.y, boss.x, boss.y);
+            bulletVelocityX = Math.cos(angleToBoss) * 600;
+            bulletVelocityY = Math.sin(angleToBoss) * 600;
+        }
+    
         let bullet = this.bullets.get();
         if (bullet) {
             bullet.setTexture('Bullet');
             bullet.resetBullet(bulletX, bulletY, bulletVelocityX, bulletVelocityY);
         }
     }
-
+    
     takeDamage() {
         this.health -= 1;
         console.log(this.health);
+        this.setTint(0xff0000); // Aplicar filtro rojo
+
+        // Quitar filtro rojo después de 0.5 segundos
+        this.scene.time.delayedCall(500, () => {
+            this.clearTint();
+        });
+
         if (this.health <= 0) {
-            this.scene.scene.start('mainlevels'); // Cambiar a la escena mainlevels si el jugador muere
+            this.scene.scene.start('mainlevels'); // Cambiar de escena si muere
         }
     }
-    knockback(intensidad)
-    {
+
+    knockback(intensidad) {
         this.body.setVelocityX(intensidad);
         this.isknockback = true;
+    }
+    adjustHitbox() {
+        this.body.setSize(50, 50); // Ajustar dimensiones del hitbox
+        this.body.setOffset(0, 0); // Cambiar desplazamiento
     }
 }

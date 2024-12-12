@@ -11,6 +11,10 @@ export class Animations extends Phaser.Scene {
         //Fondos
         this.load.image('title_bg', './assets/images/Menu_Img.png');
         this.load.image('fondo__temp_level1', 'assets/images/craftpix-771800-free-war-pixel-art-2d-game-backgrounds/War4/War4.png');
+        this.load.image('fondo__temp_level2', 'assets/images/craftpix-net-776320-free-pixel-art-fantasy-2d-battlegrounds/Battleground3/Battleground3.png');
+        this.load.image('fondo__temp_level3', 'assets/images/craftpix-net-776320-free-pixel-art-fantasy-2d-battlegrounds/Battleground4/Battleground4.png');
+        this.load.image('fondo__temp_level4', 'assets/images/Free Pixel Art Forest/Background.png');
+
         this.load.image('Hacha', 'assets/images/craftpix-net-100504-free-orc-sprite-sheets-pixel-art/Orc_Warrior/hacha.png');
         this.load.image('Menu_map', 'assets/images/Mapa_menu.png');
         
@@ -28,12 +32,12 @@ export class Animations extends Phaser.Scene {
         //Players
             //player1
             this.load.spritesheet('Player1A', 'assets/images/players/player1/ataque.png', {
-                frameWidth: 43,
+                frameWidth: 42,
                 frameHeight: 47
             }); //3
             this.load.spritesheet('Player1C', 'assets/images/players/player1/correr.png', {
                 frameWidth: 42,
-                frameHeight: 39
+                frameHeight: 37
             }); //8
             this.load.spritesheet('player1D', 'assets/images/players/player1/danno.png', {
                 frameWidth: 42,
@@ -375,7 +379,7 @@ export class Animations extends Phaser.Scene {
                 repeat: 0
             });
             this.anims.create({
-                key: 'Player1A_attacks',
+                key: 'Player1A_attack_s',
                 frames: this.anims.generateFrameNumbers('Player1A', { start: 2, end: 2 }),
                 frameRate: 5,
                 repeat: 0
