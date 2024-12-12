@@ -16,7 +16,7 @@
         {
             "type": "abyss_glass",
             "texture": "abyss_glass",
-            "cost": 0,
+            "cost": 1000,
             "damage": 0,
             "health": 0,
             "unlockAttacks": {
@@ -29,8 +29,8 @@
         {
             "type": "abyss_lamp",
             "texture": "abyss_lamp",
-            "cost": 0,
-            "damage": 0,
+            "cost": 400,
+            "damage": 2,
             "health": 0,
             "unlockAttacks": {
                 "attack1": false,
@@ -42,9 +42,9 @@
         {
             "type": "abyss_mask1",
             "texture": "abyss_mask1",
-            "cost": 0,
-            "damage": 0,
-            "health": 0,
+            "cost": 200,
+            "damage": 1,
+            "health": 1,
             "unlockAttacks": {
                 "attack1": false,
                 "attack2": false

@@ -24,10 +24,10 @@ export class TitleScreen extends Phaser.Scene {
             .setOrigin(0.5)
             .on('pointerdown', () => this.scene.start('mainlevels'));
 
-        // Botón "Opciones"
-        const optionsButton = this.add.text(width / 2 - 50, height / 2 + 150, 'Opciones', { fontSize: '32px', fill: '#FFF' })
-            .setInteractive()
-            .setOrigin(0.5)
-            .on('pointerdown', () => this.scene.start('optionsmenu'));
+        // // Botón "Opciones"
+        // const optionsButton = this.add.text(width / 2 - 50, height / 2 + 150, 'Opciones', { fontSize: '32px', fill: '#FFF' })
+        //     .setInteractive()
+        //     .setOrigin(0.5)
+        //     .on('pointerdown', () => this.scene.start('optionsmenu'));
     }
 }

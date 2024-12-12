@@ -147,6 +147,9 @@ export class MainLevels extends Phaser.Scene {
         const startX = -itemSize; // Posición inicial en X
         const startY = -100 + this.scrollOffset; // Posición inicial en Y, incluyendo el offset de scroll
     
+        // Obtener dimensiones de la pantalla
+        const { width, height } = this.sys.game.scale.gameSize;
+    
         this.itemsData.forEach((item, index) => {
             const row = Math.floor(index / itemsPerRow);
             const col = index % itemsPerRow;
@@ -176,7 +179,16 @@ export class MainLevels extends Phaser.Scene {
                 if (!isPurchased) {
                     itemImage.setScale(1.5); // Escalar al tamaño normal cuando el ratón esté encima
                 }
-                this.itemDescriptionText.setText(item.description || 'Sin descripción');
+    
+                // Mostrar descripción dependiendo del tipo de objeto
+                const description = item.type === 'abyss_glass'
+                ? 'Te desbloquea\nel ataque especial'
+                : `Cuesta ${item.cost}€\nTe da +${item.damage} de daño\ny +${item.health} de vida`;
+            
+    
+                // Actualizar el texto de descripción existente
+                
+                this.itemDescriptionText = this.add.text(width * 0.55, height * 0.65, description, { fontSize: '24px', fill: '#FFF' });
             });
     
             // Manejar evento cuando el ratón sale del objeto
@@ -187,13 +199,18 @@ export class MainLevels extends Phaser.Scene {
                 this.itemDescriptionText.setText(''); // Limpiar la descripción
             });
     
-            // Manejar la compra solo si el objeto no ha sido comprado
-            if (!isPurchased) {
+            // Manejar compra solo si el precio no es 0 y no ha sido comprado
+            if (!isPurchased && item.cost > 0) {
                 itemImage.on('pointerdown', () => this.purchaseItem(item));
             }
     
-            // Crear el texto del precio debajo de la imagen
-            const priceText = this.add.text(x, y + 20, `${item.cost} €`, { fontSize: '16px', fill: '#FFF' }).setOrigin(0.5);
+            // Crear el texto del precio o "DLC" si el precio es 0
+            const priceText = this.add.text(
+                x,
+                y + 20,
+                item.cost > 0 ? `${item.cost} €` : 'DLC',
+                { fontSize: '16px', fill: item.cost > 0 ? '#FFF' : '#FFD700' }
+            ).setOrigin(0.5);
     
             // Añadir imagen y precio al contenedor de la tienda
             this.storeContainer.add([itemImage, priceText]);
