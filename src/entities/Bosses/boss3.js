@@ -19,11 +19,12 @@ export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
         this.isPlayingAttackAnimation = false;
         this.attackCooldown = 2000; 
         this.SattackCooldown = 7000; 
-        this.lastAttackTime = 0;
+        this.lastAttackTime = 2000;
         this.truedead = false;
         this.adjustHitbox();
         this.isinmortal =false;
         this.nocomplete = false;
+        this.first = true;
         // Crear grupo para balas del boss
         this.bullets = scene.physics.add.group({
             classType: Bullet,
@@ -74,8 +75,13 @@ export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
             this.play('Boss_M_Idle_animation', true);
     
             // Ataque
-            if (time > this.lastAttackTime + this.attackCooldown && !this.nocomplete) {
-                this.chooseRandomAttack(player);
+            if (time > this.lastAttackTime + this.attackCooldown && !this.isPlayingHurtAnimation&& !this.nocomplete) {
+                if(this.first)
+                {
+                    this.chooseRandomAttack(player);
+                }
+                else        
+                this.first = true;
                 this.lastAttackTime = time;
             }
         } else if (this.isPlayingHurtAnimation) {
@@ -151,7 +157,7 @@ export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
         if (this.isinmortal || this.isDead) return;
     
         this.health -= 1;
-    
+        this.hits = (this.hits || 0) + 1;
         if (this.health <= 0) {
             this.isDead = true;
             this.setVelocity(0, 0);

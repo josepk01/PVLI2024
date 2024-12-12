@@ -17,11 +17,12 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
         this.isPlayingHurtAnimation = false;
         this.isPlayingAttackAnimation = false;
         this.attackCooldown = 2000; 
-        this.lastAttackTime = 0;
+        this.lastAttackTime = 2000;
         this.truedead = false;
         this.adjustHitbox();
         this.isinmortal =false;
         this.nocomplete = false;
+        this.first = true;
         // Crear grupo para balas del boss
         this.hatches = scene.physics.add.group({
             classType: Bullet,
@@ -71,7 +72,12 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
                 this.isinmortal =false;
             }
             if (time > this.lastAttackTime + this.attackCooldown && !this.isPlayingHurtAnimation&& !this.nocomplete) {
-                this.chooseRandomAttack(player);
+                if(this.first)
+                {
+                    this.chooseRandomAttack(player);
+                }
+                else        
+                this.first = true;
                 this.lastAttackTime = time;
             }
         }

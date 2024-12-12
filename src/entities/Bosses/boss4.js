@@ -19,11 +19,11 @@ export default class Boss4 extends Phaser.Physics.Arcade.Sprite {
         this.isPlayingAttackAnimation = false;
         this.attackCooldown = 2000;
         this.SattackCooldown = 7000;
-        this.lastAttackTime = 0;
+        this.lastAttackTime = 2000;
         this.truedead = false;
         this.adjustHitbox();
         this.isinmortal = false;
-
+        this.first = true;
         // Crear grupo para balas del boss
         this.bullets = scene.physics.add.group({
             classType: Bullet,
@@ -58,8 +58,13 @@ export default class Boss4 extends Phaser.Physics.Arcade.Sprite {
                 this.facingDirection = 'right';
             }
             // Ataques
-            if (time > this.lastAttackTime + this.attackCooldown) {
-                this.chooseRandomAttack(player);
+            if (time > this.lastAttackTime + this.attackCooldown && !this.isPlayingHurtAnimation&& !this.nocomplete) {
+                if(this.first)
+                {
+                    this.chooseRandomAttack(player);
+                }
+                else        
+                this.first = true;
                 this.lastAttackTime = time;
             }
         } else if (this.isPlayingHurtAnimation) {
@@ -113,9 +118,9 @@ export default class Boss4 extends Phaser.Physics.Arcade.Sprite {
         this.play('boss_G_special_attack_animation', true);
     
         // Crear el láser
-        const laser = this.scene.add.sprite(player.x, this.y, 'Boss_G_Laser'); // Iniciar en la posición del boss
+        const laser = this.scene.add.sprite(this.x, this.y, 'Boss_G_Laser'); // Iniciar en la posición del boss
         laser.setOrigin(0, 0); // Comenzar desde la parte superior
-        laser.setScale(3,1); // Escalar globalmente si es necesario
+        laser.setScale(3, 1); // Escalar globalmente si es necesario
         laser.angle = 90; // Rotar 90 grados a la derecha
     
         // Aplicar la animación del láser
@@ -125,15 +130,30 @@ export default class Boss4 extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.world.enable(laser);
         laser.body.allowGravity = false;
     
-        // Ajustar el tamaño y posición de la hitbox
-        const laserLength = this.scene.scale.height; // Ajustar la longitud de la hitbox a la altura de la pantalla
-        
-        laser.body.setSize(15, laserLength); // Tamaño ajustado para la longitud y escala
-        laser.body.setOffset(-20, 0); // Centrar la hitbox respecto al láser
+        // Ajustar el tamaño y posición inicial de la hitbox
+        laser.body.setSize(0, 0); // Inicialmente sin hitbox
     
-        // Mover la hitbox para alinearla con la posición del láser
-        laser.body.x = this.x - laser.body.width / 2;
-        laser.body.y = this.y;
+        // Configurar daño al jugador
+        let hasDamaged = false; // Evitar múltiples daños en una colisión
+        this.scene.physics.add.overlap(laser, player, () => {
+            if (!hasDamaged) {
+                player.takeDamage();
+                hasDamaged = true; // Asegurar daño único
+            }
+        });
+    
+        // Cambiar la hitbox en función del frame actual
+        laser.on('animationupdate', (animation, frame) => {
+            if (frame.index >= 8) {
+                // Ajustar la hitbox a partir del frame 8
+                const laserLength = this.scene.scale.height; // Longitud completa del láser
+                laser.body.setSize(15, laserLength); // Ajustar tamaño de la hitbox
+                laser.body.setOffset(-20, 0); // Ajustar posición
+            } else {
+                // Eliminar la hitbox antes del frame 8
+                laser.body.setSize(0, 0);
+            }
+        });
     
         // Añadir efecto visual (desvanecer)
         this.scene.tweens.add({
@@ -145,26 +165,18 @@ export default class Boss4 extends Phaser.Physics.Arcade.Sprite {
             },
         });
     
-        // Configurar daño al jugador
-        let hasDamaged = false; // Evitar múltiples daños en una colisión
-        this.scene.physics.add.overlap(laser, player, () => {
-            if (!hasDamaged) {
-                player.takeDamage();
-                hasDamaged = true; // Asegurar daño único
-            }
-        });
-    
         // Restablecer el estado del boss al finalizar la animación
         this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
             this.isPlayingAttackAnimation = false;
         });
     }
     
+    
     takeDamage() {
         if (this.isinmortal || this.isDead) return;
 
         this.health -= 1;
-
+        this.hits = (this.hits || 0) + 1;
         if (this.health <= 0) {
             this.isDead = true;
             this.setVelocity(0, 0);

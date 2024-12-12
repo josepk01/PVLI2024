@@ -17,7 +17,8 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
         this.isPlayingHurtAnimation = false;
         this.isPlayingAttackAnimation = false;
         this.attackCooldown = 2000; 
-        this.lastAttackTime = 0;
+        this.lastAttackTime = 2000;
+        this.first = true;
         this.truedead = false;
         this.adjustHitbox();
         this.isinmortal =false;
@@ -79,7 +80,12 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
                 this.isinmortal =false;
             }
             if (time > this.lastAttackTime + this.attackCooldown && !this.isPlayingHurtAnimation&& !this.nocomplete) {
-                this.chooseRandomAttack(player);
+                if(this.first)
+                {
+                    this.chooseRandomAttack(player);
+                }
+                else        
+                this.first = true;
                 this.lastAttackTime = time;
             }
         }
