@@ -135,12 +135,12 @@ export class Animations extends Phaser.Scene {
         this.load.spritesheet('Boss_M_Dead', 'assets/images/Undead executioner puppet/death.png',  { frameWidth: 100, frameHeight: 100 });//18
             //summons
             this.load.spritesheet('Boss_M_Summon_a', 'assets/images/Undead executioner puppet/summonAppear.png',  { frameWidth: 50, frameHeight: 50 });//6
-            this.load.spritesheet('Boss_M_Summon_Idle', 'assets/images/Undead executioner puppet/Orc_Berserk/summonIdle.png',  { frameWidth: 50, frameHeight: 50 });//4
+            this.load.spritesheet('Boss_M_Summon_Idle', 'assets/images/Undead executioner puppet/summonIdle.png',  { frameWidth: 50, frameHeight: 50 });//4
 
         // Cargar spritesheets con animaciones Boss Golem
         this.load.spritesheet('Boss_G_Proy', 'assets/images/Mecha-stone Golem 0.1/arm_projectile_glowing.png',  { frameWidth: 100, frameHeight: 100 });//6
-        this.load.spritesheet('Boss_G_Laser', 'assets/images/Mecha-stone Golem 0.1/Laser_sheet.png',  { frameWidth: 100, frameHeight: 100 });//14 columnas
-        this.load.spritesheet('Boss_G_Attack_animation2', 'assets/images/Mecha-stone Golem 0.1/Character_sheet',  { frameWidth: 100, frameHeight: 100 });//9 columnas
+        this.load.spritesheet('Boss_G_Laser', 'assets/images/Mecha-stone Golem 0.1/Laser_sheet.png',  { frameWidth: 300, frameHeight: 100 });//14 columnas
+        this.load.spritesheet('boss_G_Attack_animation2', 'assets/images/Mecha-stone Golem 0.1/Character_sheet.png',  { frameWidth: 100, frameHeight: 100 });//9 columnas
 
 
 
@@ -308,14 +308,13 @@ export class Animations extends Phaser.Scene {
         });
 
         // Laser (Cada fila es un frame distinto, 14 filas totales)
-        for (let i = 0; i < 14; i++) {
-            this.anims.create({
-                key: `boss_G_laser_animation_row_${i}`,
-                frames: [{ key: 'boss_G_Laser', frame: i * 10 }], // Solo 1 frame por fila
-                frameRate: 1,
-                repeat: 0
-            });
-        }
+        this.anims.create({
+            key: 'boss_G_laser_animation',
+            frames: this.anims.generateFrameNumbers('Boss_G_Laser', { start: 0, end: 13 }), // Asume 14 filas
+            frameRate: 10, // Velocidad de la animación
+            repeat: -1, // Repetir mientras el láser esté activo
+        });
+        
 
         // Character Sheet Animaciones (9 filas, cada una con su propia animación)
         this.anims.create({

@@ -3,7 +3,8 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
-
+        if(texture ==='Boss_G_Proy')
+            this.play('Boss_G_Proy', true)
         // Asegurarse de que la bala no tenga gravedad
         this.body.allowGravity = false;
 

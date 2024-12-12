@@ -6,33 +6,37 @@ export default class SubEnemy extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.setCollideWorldBounds(true);
-        this.setGravityY(300);
+        this.body.allowGravity = false; // No afecta la gravedad
 
         this.setScale(2.25);
         this.health = 1; // Vida inicial del sub-enemigo
         this.facingDirection = 'left';
-
-        this.setFlipX(true);
         this.isDead = false;
 
         this.adjustHitbox();
 
-        // Guardar dimensiones del escenario
-        this.screenHeight = scene.scale.height;
-        this.screenWidth = scene.scale.width;
-
-        // Asignar referencia al jugador
+        // Guardar referencia al jugador
         this.player = player;
+
+        // Animación inicial de spawn
+        this.play('Summon_Appear');
+        this.isSpawning = true; // Indicador de animación de spawn en curso
+
+        // Finalizar animación de spawn
+        this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+            this.isSpawning = false; // Animación de spawn completada
+            this.play('Summon_Idle', true); // Cambiar a animación de movimiento
+        });
     }
 
     update(time) {
-        if (!this.isDead && this.player) {
+        if (!this.isDead && this.player && !this.isSpawning) {
             const distanceToPlayer = Phaser.Math.Distance.Between(this.x, this.y, this.player.x, this.player.y);
 
             if (distanceToPlayer > 30) {
-                // Moverse hacia el jugador en el eje X
+                // Moverse hacia el jugador en ambas direcciones (4 direcciones)
                 const angleToPlayer = Phaser.Math.Angle.Between(this.x, this.y, this.player.x, this.player.y);
-                this.setVelocityX(Math.cos(angleToPlayer) * 100); // Solo eje X para movimiento horizontal
+                this.setVelocity(Math.cos(angleToPlayer) * 100, Math.sin(angleToPlayer) * 100);
             } else {
                 // Detenerse y dañar al jugador si está cerca
                 this.setVelocity(0, 0);

@@ -1,64 +1,54 @@
 import Bullet from '../Balas/Bullet.js';
-import SubEnemy from '../SubEnemy/SubEnemy.js';
 
-export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
+export default class Boss4 extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'Boss_M_Idle');
+        super(scene, x, y, 'boss_G_idle_animation');
         scene.add.existing(this);
         scene.physics.add.existing(this);
+
         this.body.allowGravity = false;
         this.setCollideWorldBounds(true);
         this.setScale(2.25);
         this.health = 5; // Cambiar vida a 5
         this.facingDirection = 'left';
-        this.play('Boss_M_Idle_animation');
+        this.play('boss_G_idle_animation');
         this.setFlipX(true);
         this.isPlayingDead = false;
         this.isDead = false;
         this.isPlayingHurtAnimation = false;
         this.isPlayingAttackAnimation = false;
-        this.attackCooldown = 2000; 
-        this.SattackCooldown = 7000; 
+        this.attackCooldown = 2000;
+        this.SattackCooldown = 7000;
         this.lastAttackTime = 0;
         this.truedead = false;
         this.adjustHitbox();
-        this.isinmortal =false;
-        this.nocomplete = false;
+        this.isinmortal = false;
+
         // Crear grupo para balas del boss
         this.bullets = scene.physics.add.group({
             classType: Bullet,
             runChildUpdate: true,
         });
-        this.sub_enemy = scene.physics.add.group({
-            classType: SubEnemy,
-            runChildUpdate: true,
-        });
+
         // Guardar dimensiones del escenario
-        this.screenHeight = scene.scale.height;
         this.screenWidth = scene.scale.width;
 
-        this.specialAttackThresholds = { jump: false, bullets: false };
+        this.specialAttackThresholds = { laser: false };
     }
 
     update(time, player) {
         if (!this.isDead && !this.isPlayingHurtAnimation) {
-            // Calcular la distancia al jugador
-            const distanceToPlayer = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
-    
-            if (distanceToPlayer <= 300) {
-                // Si está demasiado cerca del jugador, moverse en dirección contraria
-                const angleAway = Phaser.Math.Angle.Between(player.x, player.y, this.x, this.y);
-                this.setVelocity(Math.cos(angleAway) * 100, Math.sin(angleAway) * 100);
+            // Movimiento en el eje X (parte superior de la pantalla)
+            const targetX = Phaser.Math.Clamp(player.x, 0, this.screenWidth - this.width);
+            const distanceX = Math.abs(targetX - this.x);
+
+            // Si está dentro del margen de 50 píxeles, detener el movimiento
+            if (distanceX <= 50) {
+                this.setVelocityX(0);
             } else {
-                // Si está lejos del jugador, moverse hacia él
-                const angleToPlayer = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
-                this.setVelocity(Math.cos(angleToPlayer) * 100, Math.sin(angleToPlayer) * 100);
+                this.setVelocityX(targetX > this.x ? 100 : -100);
             }
-    
-            // Asegurarse de que no salga del mundo
-            this.x = Phaser.Math.Clamp(this.x, 0, this.screenWidth);
-            this.y = Phaser.Math.Clamp(this.y, 0, this.screenHeight);
-    
+
             // Determinar la dirección del sprite
             if (this.body.velocity.x < 0) {
                 this.setFlipX(true);
@@ -67,12 +57,8 @@ export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
                 this.setFlipX(false);
                 this.facingDirection = 'right';
             }
-    
-            // Animación Idle mientras se mueve
-            this.play('Boss_M_Idle_animation', true);
-    
-            // Ataque
-            if (time > this.lastAttackTime + this.attackCooldown && !this.nocomplete) {
+            // Ataques
+            if (time > this.lastAttackTime + this.attackCooldown) {
                 this.chooseRandomAttack(player);
                 this.lastAttackTime = time;
             }
@@ -88,75 +74,101 @@ export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
             }
         } else {
             this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
-                if (anim.key === 'Boss_M_Idle_animation') {
-                    this.isPlayingHurtAnimation = false;
-                    this.clearTint();
-                }
-            });
-            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
-                if (anim.key === 'Boss_M_Dead_anim') {
+                if (anim.key === 'boss_G_death_animation') {
                     this.emit('bossDead'); // Emitir un evento para manejar la muerte del boss
                     this.destroy();
                 }
             });
         }
     }
-    
-        chooseRandomAttack(player) {
-        if (Math.abs(player.x - this.x) > 80) {
-            this.attack1(player); // Distancia para lanzar balas
+
+    chooseRandomAttack(player) {
+        if (Phaser.Math.Between(0, 1) === 0) {
+            this.attack1(player);
         } else {
-            this.multispawn(player); // Ataque cuerpo a cuerpo
+            this.laserAttack(player);
         }
     }
-    attack1(player) {
-        this.isPlayingAttackAnimation = true; // Indicar que está atacando
-        this.play('Boss_M_attack1', true);
-        this.isPlayingDead =false;
 
-        for (let i = -2; i <= 2; i++) {
-            let bulletX = player.x + i * 40;
-            let bulletY = 0;
-    
-            let bullet = this.bullets.get();
-            bullet.setTexture('Boss_Bullet');
-            if (bullet) {
-                bullet.resetBullet(bulletX, bulletY, 0, 300);
-            }
+    attack1(player) {
+        this.isPlayingAttackAnimation = true;
+        this.play('boss_G_attack_animation', true);
+        const bullet = this.bullets.get(this.x , this.y, 'Boss_G_Proy'); // Obtener una bala del grupo
+        if (bullet) {
+            const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y); // Calcular ángulo hacia el jugador
+            const velocityX = Math.cos(angle) * 300; // Velocidad horizontal
+            const velocityY = Math.sin(angle) * 300; // Velocidad vertical
+
+            bullet.resetBullet(this.x, this.y, velocityX, velocityY); // Restablecer la posición y velocidad de la hacha
+
         }
-    }    
-  
-    multispawn(player) {// cambiar a sprite de muerte
+        this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+            this.isPlayingAttackAnimation = false;
+        });
+    }
+
+    laserAttack(player) {
         this.isPlayingAttackAnimation = true;
         this.setVelocityX(0);
-        this.play('Boss_M_Attack2', true);
+        this.play('boss_G_special_attack_animation', true);
     
-        const subEnemyTypes = ['Sub_enemy1', 'Sub_enemy2', 'Sub_enemy3', 'Sub_enemy4'];
+        // Crear el láser
+        const laser = this.scene.add.sprite(player.x, this.y, 'Boss_G_Laser'); // Iniciar en la posición del boss
+        laser.setOrigin(0, 0); // Comenzar desde la parte superior
+        laser.setScale(3,1); // Escalar globalmente si es necesario
+        laser.angle = 90; // Rotar 90 grados a la derecha
     
-        // Elegir aleatoriamente un tipo de enemigo
-        const randomType = Phaser.Math.Between(0, subEnemyTypes.length - 1);
-        const chosenSprite = subEnemyTypes[randomType];
+        // Aplicar la animación del láser
+        laser.play('boss_G_laser_animation');
     
-        // Generar un nuevo enemigo
-        const subEnemy = this.sub_enemy.get(this.x + Phaser.Math.Between(-50, 50), this.y, chosenSprite, player);
-        if (subEnemy) {
-            subEnemy.setTexture(chosenSprite);
-            subEnemy.setActive(true).setVisible(true);
-            subEnemy.body.setCollideWorldBounds(true);
-            subEnemy.body.setGravityY(300);
-        }
+        // Habilitar física para el láser
+        this.scene.physics.world.enable(laser);
+        laser.body.allowGravity = false;
     
-        this.nocomplete = false;
+        // Ajustar el tamaño y posición de la hitbox
+        const laserLength = this.scene.scale.height; // Ajustar la longitud de la hitbox a la altura de la pantalla
+        
+        laser.body.setSize(15, laserLength); // Tamaño ajustado para la longitud y escala
+        laser.body.setOffset(-20, 0); // Centrar la hitbox respecto al láser
+    
+        // Mover la hitbox para alinearla con la posición del láser
+        laser.body.x = this.x - laser.body.width / 2;
+        laser.body.y = this.y;
+    
+        // Añadir efecto visual (desvanecer)
+        this.scene.tweens.add({
+            targets: laser,
+            alpha: { start: 1, to: 0 },
+            duration: 2000, // Duración del láser
+            onComplete: () => {
+                laser.destroy(); // Eliminar el sprite después del tween
+            },
+        });
+    
+        // Configurar daño al jugador
+        let hasDamaged = false; // Evitar múltiples daños en una colisión
+        this.scene.physics.add.overlap(laser, player, () => {
+            if (!hasDamaged) {
+                player.takeDamage();
+                hasDamaged = true; // Asegurar daño único
+            }
+        });
+    
+        // Restablecer el estado del boss al finalizar la animación
+        this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+            this.isPlayingAttackAnimation = false;
+        });
     }
+    
     takeDamage() {
         if (this.isinmortal || this.isDead) return;
-    
+
         this.health -= 1;
-    
+
         if (this.health <= 0) {
             this.isDead = true;
             this.setVelocity(0, 0);
-            this.play('Boss_M_Dead_anim', false);
+            this.play('boss_G_death_animation', false);
             this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
                 this.emit('bossDead');
                 this.destroy();
@@ -169,19 +181,9 @@ export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
             }
         }
     }
-        stopAllActions() {
-        // Detener cualquier animación en curso
-        this.stop();
-    
-        // Desactivar los estados de ataque y daño
-        this.isPlayingHurtAnimation = false;
-        this.isPlayingAttackAnimation = false;
-    
-        // Detener el movimiento del boss
-        this.setVelocity(0, 0);
-    }
+
     adjustHitbox() {
-        this.body.setSize(30, 70); // Ajustar dimensiones del hitbox
+        this.body.setSize(50, 70); // Ajustar dimensiones del hitbox
         this.body.setOffset(40, 25); // Cambiar desplazamiento
     }
 }

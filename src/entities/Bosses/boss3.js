@@ -45,14 +45,16 @@ export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
             // Calcular la distancia al jugador
             const distanceToPlayer = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
     
-            if (distanceToPlayer <= 300) {
-                // Si está demasiado cerca del jugador, moverse en dirección contraria
-                const angleAway = Phaser.Math.Angle.Between(player.x, player.y, this.x, this.y);
-                this.setVelocity(Math.cos(angleAway) * 100, Math.sin(angleAway) * 100);
-            } else {
+            if (distanceToPlayer >= 300) {
                 // Si está lejos del jugador, moverse hacia él
                 const angleToPlayer = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
                 this.setVelocity(Math.cos(angleToPlayer) * 100, Math.sin(angleToPlayer) * 100);
+
+            } else if(distanceToPlayer <= 250)
+            {
+                // Si está demasiado cerca del jugador, moverse en dirección contraria
+                const angleAway = Phaser.Math.Angle.Between(player.x, player.y, this.x, this.y);
+                this.setVelocity(Math.cos(angleAway) * 100, Math.sin(angleAway) * 100);
             }
     
             // Asegurarse de que no salga del mundo
@@ -126,28 +128,25 @@ export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
         }
     }    
   
-    multispawn(player) {// cambiar a sprite de muerte
+    multispawn(player) {
         this.isPlayingAttackAnimation = true;
         this.setVelocityX(0);
         this.play('Boss_M_Attack2', true);
     
-        const subEnemyTypes = ['Sub_enemy1', 'Sub_enemy2', 'Sub_enemy3', 'Sub_enemy4'];
-    
-        // Elegir aleatoriamente un tipo de enemigo
-        const randomType = Phaser.Math.Between(0, subEnemyTypes.length - 1);
-        const chosenSprite = subEnemyTypes[randomType];
-    
+        const subEnemyTypes = ['Boss_M_Summon_a'];
+  
         // Generar un nuevo enemigo
-        const subEnemy = this.sub_enemy.get(this.x + Phaser.Math.Between(-50, 50), this.y, chosenSprite, player);
+        const subEnemy = this.sub_enemy.get(this.x + Phaser.Math.Between(-50, 50), this.y, subEnemyTypes, player);
         if (subEnemy) {
-            subEnemy.setTexture(chosenSprite);
+            subEnemy.setTexture(subEnemyTypes);
             subEnemy.setActive(true).setVisible(true);
             subEnemy.body.setCollideWorldBounds(true);
-            subEnemy.body.setGravityY(300);
+            subEnemy.body.allowGravity = false; // Sin gravedad
         }
     
         this.nocomplete = false;
     }
+    
     takeDamage() {
         if (this.isinmortal || this.isDead) return;
     
