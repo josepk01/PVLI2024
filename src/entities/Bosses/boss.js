@@ -8,7 +8,7 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
 
         this.setCollideWorldBounds(true);
         this.setScale(2.25);
-        this.health = 5; // Cambiar vida a 5
+        this.health = 10; // Cambiar vida a 5
         this.facingDirection = 'left';
         this.play('boss_B_idle_animation');
         this.setFlipX(true);

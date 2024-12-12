@@ -9,7 +9,7 @@ export default class Boss4 extends Phaser.Physics.Arcade.Sprite {
         this.body.allowGravity = false;
         this.setCollideWorldBounds(true);
         this.setScale(2.25);
-        this.health = 5; // Cambiar vida a 5
+        this.health = 40; // Cambiar vida a 5
         this.facingDirection = 'left';
         this.play('boss_G_idle_animation');
         this.setFlipX(true);
@@ -17,9 +17,9 @@ export default class Boss4 extends Phaser.Physics.Arcade.Sprite {
         this.isDead = false;
         this.isPlayingHurtAnimation = false;
         this.isPlayingAttackAnimation = false;
-        this.attackCooldown = 2000;
+        this.attackCooldown = 500;
         this.SattackCooldown = 7000;
-        this.lastAttackTime = 2000;
+        this.lastAttackTime = 500;
         this.truedead = false;
         this.adjustHitbox();
         this.isinmortal = false;
