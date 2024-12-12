@@ -1,29 +1,38 @@
 import Bullet from '../Balas/Bullet.js';
+import SubEnemy from '../SubEnemy/SubEnemy.js';
 
-export default class Boss extends Phaser.Physics.Arcade.Sprite {
+export default class Boss3 extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'Boss_B_Idle');
+        super(scene, x, y, 'Boss_M_Idle');
         scene.add.existing(this);
         scene.physics.add.existing(this);
-
+        this.body.allowGravity = false;
         this.setCollideWorldBounds(true);
         this.setScale(2.25);
         this.health = 5; // Cambiar vida a 5
         this.facingDirection = 'left';
-        this.play('boss_B_idle_animation');
+        this.play('Boss_M_Idle_animation');
         this.setFlipX(true);
-
+        this.isPlayingDead = false;
         this.isDead = false;
         this.isPlayingHurtAnimation = false;
+        this.isPlayingAttackAnimation = false;
         this.attackCooldown = 2000; 
+        this.SattackCooldown = 7000; 
         this.lastAttackTime = 0;
-
+        this.truedead = false;
+        this.adjustHitbox();
+        this.isinmortal =false;
+        this.nocomplete = false;
         // Crear grupo para balas del boss
         this.bullets = scene.physics.add.group({
             classType: Bullet,
             runChildUpdate: true,
         });
-        this.adjustHitbox();
+        this.sub_enemy = scene.physics.add.group({
+            classType: SubEnemy,
+            runChildUpdate: true,
+        });
         // Guardar dimensiones del escenario
         this.screenHeight = scene.scale.height;
         this.screenWidth = scene.scale.width;
@@ -32,166 +41,147 @@ export default class Boss extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(time, player) {
-        if (!player || this.isDead || this.isPlayingHurtAnimation) {
-            return;
-        }
-
-        // Realizar salto al 50% de vida
-        if (this.health <= 2.5 && !this.specialAttackThresholds.jump) {
-            this.specialAttackThresholds.jump = true;
-            this.jumpToEdge(player);
-            return;
-        }
-
-        // Realizar ataque especial con balas al 25% de vida
-        if (this.health <= 1.25 && !this.specialAttackThresholds.bullets) {
-            if (Math.random() <= 0.25) {
-                this.specialAttackThresholds.bullets = true;
-                this.specialBulletAttack(player);
+        if (!this.isDead && !this.isPlayingHurtAnimation) {
+            // Calcular la distancia al jugador
+            const distanceToPlayer = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+    
+            if (distanceToPlayer <= 300) {
+                // Si está demasiado cerca del jugador, moverse en dirección contraria
+                const angleAway = Phaser.Math.Angle.Between(player.x, player.y, this.x, this.y);
+                this.setVelocity(Math.cos(angleAway) * 100, Math.sin(angleAway) * 100);
+            } else {
+                // Si está lejos del jugador, moverse hacia él
+                const angleToPlayer = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
+                this.setVelocity(Math.cos(angleToPlayer) * 100, Math.sin(angleToPlayer) * 100);
             }
-            return;
-        }
-
-        // Movimiento y ataques regulares
-        if (Math.abs(player.x - this.x) <= 10) {
-            this.setVelocityX(0);
-            this.play('boss_B_idle_animation', true);
-        } else if (player.x < this.x) {
-            this.setVelocityX(-100);
-            this.play('boss_B_run_animation', true);
-            if (this.facingDirection !== 'left') {
+    
+            // Asegurarse de que no salga del mundo
+            this.x = Phaser.Math.Clamp(this.x, 0, this.screenWidth);
+            this.y = Phaser.Math.Clamp(this.y, 0, this.screenHeight);
+    
+            // Determinar la dirección del sprite
+            if (this.body.velocity.x < 0) {
                 this.setFlipX(true);
                 this.facingDirection = 'left';
-            }
-        } else if (player.x > this.x) {
-            this.setVelocityX(100);
-            this.play('boss_B_run_animation', true);
-            if (this.facingDirection !== 'right') {
+            } else if (this.body.velocity.x > 0) {
                 this.setFlipX(false);
                 this.facingDirection = 'right';
             }
-        }
-
-        if (time > this.lastAttackTime + this.attackCooldown) {
-            this.chooseRandomAttack(player);
-            this.lastAttackTime = time;
-        }
-    }
-
-    chooseRandomAttack(player) {
-        const randomAttack = Phaser.Math.Between(1, 2);
-        if (randomAttack === 1) {
-            this.attack1(player);
+    
+            // Animación Idle mientras se mueve
+            this.play('Boss_M_Idle_animation', true);
+    
+            // Ataque
+            if (time > this.lastAttackTime + this.attackCooldown && !this.nocomplete) {
+                this.chooseRandomAttack(player);
+                this.lastAttackTime = time;
+            }
+        } else if (this.isPlayingHurtAnimation) {
+            // Si está en animación de daño, quitar el tinte rojo después de 0.5 segundos
+            if (!this.hurtTimer) {
+                this.hurtTimer = time;
+            }
+            if (time > this.hurtTimer + 500) {
+                this.clearTint();
+                this.isPlayingHurtAnimation = false;
+                this.hurtTimer = null;
+            }
         } else {
-            this.attack2(player);
+            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
+                if (anim.key === 'Boss_M_Idle_animation') {
+                    this.isPlayingHurtAnimation = false;
+                    this.clearTint();
+                }
+            });
+            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
+                if (anim.key === 'Boss_M_Dead_anim') {
+                    this.emit('bossDead'); // Emitir un evento para manejar la muerte del boss
+                    this.destroy();
+                }
+            });
         }
     }
-
+    
+        chooseRandomAttack(player) {
+        if (Math.abs(player.x - this.x) > 80) {
+            this.attack1(player); // Distancia para lanzar balas
+        } else {
+            this.multispawn(player); // Ataque cuerpo a cuerpo
+        }
+    }
     attack1(player) {
-        this.play('boss_B_attack1_animation', true);
+        this.isPlayingAttackAnimation = true; // Indicar que está atacando
+        this.play('Boss_M_attack1', true);
+        this.isPlayingDead =false;
+
         for (let i = -2; i <= 2; i++) {
             let bulletX = player.x + i * 40;
             let bulletY = 0;
-
+    
             let bullet = this.bullets.get();
             bullet.setTexture('Boss_Bullet');
             if (bullet) {
                 bullet.resetBullet(bulletX, bulletY, 0, 300);
             }
         }
-    }
-
-    attack2(player) {
-        this.play('boss_B_attack2_animation', true);
-
-        let bulletX = this.x;
-        let bulletVelocityX = player.x > this.x ? 300 : -300;
-
-        let baseBulletY = this.y + this.height / 2 + 40;
-
-        for (let i = 0; i < 5; i++) {
-            let bulletY = baseBulletY - i * 40;
-
-            let bullet = this.bullets.get();
-            if (bullet) {
-                bullet.setTexture('Boss_Bullet');
-                bullet.resetBullet(bulletX, bulletY, bulletVelocityX, 0);
-            }
-        }
-    }
-
-    jumpToEdge(player) {
+    }    
+  
+    multispawn(player) {// cambiar a sprite de muerte
+        this.isPlayingAttackAnimation = true;
         this.setVelocityX(0);
-        this.play('boss_B_jump_animation', true);
-
-        const targetX = player.x < this.x ? 50 : this.screenWidth - 50;
-        this.scene.tweens.add({
-            targets: this,
-            x: targetX,
-            duration: 1000,
-            ease: 'Power2',
-            onComplete: () => {
-                this.play('boss_B_idle_animation', true);
-            }
-        });
-    }
-
-    specialBulletAttack(player) {
-        for (let i = 0; i < 10; i++) {
-            let randomX = Phaser.Math.Between(50, this.screenWidth - 50);
-            let randomY = Phaser.Math.Between(50, this.screenHeight - 50);
-
-            while (Math.abs(randomX - player.x) < 100 && Math.abs(randomY - player.y) < 100) {
-                randomX = Phaser.Math.Between(50, this.screenWidth - 50);
-                randomY = Phaser.Math.Between(50, this.screenHeight - 50);
-            }
-
-            const bullet = this.bullets.get();
-            if (bullet) {
-                const angle = Phaser.Math.Angle.Between(randomX, randomY, player.x, player.y);
-                const velocityX = Math.cos(angle) * 300;
-                const velocityY = Math.sin(angle) * 300;
-
-                bullet.setTexture('Boss_Bullet');
-                bullet.resetBullet(randomX, randomY, velocityX, velocityY);
-            }
+        this.play('Boss_M_Attack2', true);
+    
+        const subEnemyTypes = ['Sub_enemy1', 'Sub_enemy2', 'Sub_enemy3', 'Sub_enemy4'];
+    
+        // Elegir aleatoriamente un tipo de enemigo
+        const randomType = Phaser.Math.Between(0, subEnemyTypes.length - 1);
+        const chosenSprite = subEnemyTypes[randomType];
+    
+        // Generar un nuevo enemigo
+        const subEnemy = this.sub_enemy.get(this.x + Phaser.Math.Between(-50, 50), this.y, chosenSprite, player);
+        if (subEnemy) {
+            subEnemy.setTexture(chosenSprite);
+            subEnemy.setActive(true).setVisible(true);
+            subEnemy.body.setCollideWorldBounds(true);
+            subEnemy.body.setGravityY(300);
         }
-
-        this.play('boss_B_run_attack_animation', true);
+    
+        this.nocomplete = false;
     }
-
     takeDamage() {
-        if (this.isDead) return;
+        if (this.isinmortal || this.isDead) return;
     
         this.health -= 1;
     
-        // Incrementar el contador de ataques recibidos
-        if (!this.hits) this.hits = 0;
-        this.hits += 1;
-    
         if (this.health <= 0) {
             this.isDead = true;
-            this.setVelocityX(0);
-            this.play('boss_B_dead_animation', false);
+            this.setVelocity(0, 0);
+            this.play('Boss_M_Dead_anim', false);
             this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+                this.emit('bossDead');
                 this.destroy();
             });
         } else {
-            this.isPlayingHurtAnimation = true;
-            this.setVelocityX(0);
-            this.play('boss_B_hurt_animation');
-    
-            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, (anim) => {
-                if (anim.key === 'boss_B_hurt_animation') {
-                    this.isPlayingHurtAnimation = false;
-                }
-            });
+            if (!this.isDead) {
+                this.isPlayingHurtAnimation = true;
+                this.setVelocity(0, 0);
+                this.setTint(0xff0000);
+            }
         }
     }
+        stopAllActions() {
+        // Detener cualquier animación en curso
+        this.stop();
     
+        // Desactivar los estados de ataque y daño
+        this.isPlayingHurtAnimation = false;
+        this.isPlayingAttackAnimation = false;
+    
+        // Detener el movimiento del boss
+        this.setVelocity(0, 0);
+    }
     adjustHitbox() {
-        // Ajustar el tamaño del hitbox del jefe
-        this.body.setSize(50, 70); // Cambiar dimensiones
-        this.body.setOffset(20, 25); // Cambiar desplazamiento
+        this.body.setSize(30, 70); // Ajustar dimensiones del hitbox
+        this.body.setOffset(40, 25); // Cambiar desplazamiento
     }
 }

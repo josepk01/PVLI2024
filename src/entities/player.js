@@ -123,7 +123,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     takeDamage() {
         this.health -= 1;
-
+        console.log(this.health);
         if (this.health <= 0) {
             this.scene.scene.start('mainlevels'); // Cambiar a la escena mainlevels si el jugador muere
         }

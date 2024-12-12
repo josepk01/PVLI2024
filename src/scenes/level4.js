@@ -18,8 +18,8 @@ export class Level4 extends Phaser.Scene {
         background.setDisplaySize(width, height);
         background.x = width / 2;
         background.y = height / 2;
-               
-        this.add.text(300, 100, 'Nivel 4', { fontSize: '32px', fill: '#FFF' });
+
+        this.add.text(300, 100, 'Nivel 3', { fontSize: '32px', fill: '#FFF' });
 
         this.add.text(width - 150, height - 50, 'Volver a Selección de Nivel', { fontSize: '24px', fill: '#FFF' })
             .setInteractive()
@@ -38,6 +38,10 @@ export class Level4 extends Phaser.Scene {
         this.physics.add.collider(this.player, this.boss);
         this.physics.add.overlap(this.player.bullets, this.boss, this.bossHit, null, this);
         this.physics.add.overlap(this.boss.bullets, this.player, this.playerHit, null, this);
+        this.physics.add.overlap(this.player.bullets, this.boss.sub_enemy, (bullet, subEnemy) => {
+            bullet.destroy(); // Destruir la bala
+            subEnemy.destroy(); // Destruir el sub-enemigo
+        }, null, this);
 
         this.timerText = this.add.text(width / 2, 10, 'Tiempo: 0', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0);
 
