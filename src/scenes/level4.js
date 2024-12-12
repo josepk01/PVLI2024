@@ -1,13 +1,13 @@
 
 import Player from '../entities/player.js';
-import Boss3 from '../entities/Bosses/boss3.js';
+import Boss4 from '../entities/Bosses/boss4.js';
 import gameData from '../gameData.js';
 import HUD from './Hud.js';
 import SubEnemy from '../entities/SubEnemy/SubEnemy.js';
 
-export class Level3 extends Phaser.Scene {
+export class Level4 extends Phaser.Scene {
     constructor() {
-        super('level3');
+        super('level4');
     }
 
     create() {
@@ -19,7 +19,7 @@ export class Level3 extends Phaser.Scene {
         background.x = width / 2;
         background.y = height / 2;
                
-        this.add.text(300, 100, 'Nivel 3', { fontSize: '32px', fill: '#FFF' });
+        this.add.text(300, 100, 'Nivel 4', { fontSize: '32px', fill: '#FFF' });
 
         this.add.text(width - 150, height - 50, 'Volver a Selección de Nivel', { fontSize: '24px', fill: '#FFF' })
             .setInteractive()
@@ -32,7 +32,7 @@ export class Level3 extends Phaser.Scene {
         this.player = new Player(this, 400, groundY - 50);
         this.add.existing(this.player);
 
-        this.boss = new Boss3(this, width/2, 0);
+        this.boss = new Boss4(this, width/2, 0);
         this.add.existing(this.boss);
 
         this.physics.add.collider(this.player, this.boss);
@@ -61,7 +61,7 @@ export class Level3 extends Phaser.Scene {
     }
 
     bossHit(boss, bullet) {
-        if (boss instanceof Boss3) {
+        if (boss instanceof Boss4) {
             bullet.destroy();
             boss.takeDamage();
         }

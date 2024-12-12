@@ -47,6 +47,9 @@ export class Level2 extends Phaser.Scene {
         // Configurar la superposición entre las balas del jugador y el boss
         this.physics.add.overlap(this.player.bullets, this.boss, this.bossHit, null, this);
     
+        // Configurar la superposición entre las balas del boss y el jugador
+        this.physics.add.overlap(this.boss.hatches, this.player, this.playerHit, null, this);
+
         // Crear el texto del temporizador en la parte superior central de la pantalla
         this.timerText = this.add.text(width / 2, 10, 'Tiempo: 0', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0);
 
@@ -60,6 +63,7 @@ export class Level2 extends Phaser.Scene {
     update(time, delta) {
         // Actualizar al jugador
         this.player.update(time);
+        //console.log(this.player.x - this.boss.x )
         // Verificar que player y boss existan antes de actualizar el HUD
         if (this.player && this.boss) {
             this.hud.update(this.player, this.boss);
@@ -83,7 +87,7 @@ export class Level2 extends Phaser.Scene {
     
 
     playerHit(player, bullet) {
-        if (player instanceof Player) {
+        if (player instanceof Player && bullet.active) {
             bullet.destroy(); // Destruir la bala
             player.takeDamage(); // El jugador toma daño
             console.log(player.health);

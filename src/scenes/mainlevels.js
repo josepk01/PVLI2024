@@ -81,7 +81,8 @@ export class MainLevels extends Phaser.Scene {
         const levelIcons = [
             { x: width * 0.2, y: height * 0.4, level: 'level1', texture: 'abyss_necklace' },
             { x: width * 0.25, y: height * 0.5, level: 'level2', texture: 'abyss_necklace' },
-            { x: width * 0.3, y: height * 0.6, level: 'level3', texture: 'abyss_necklace' }
+            { x: width * 0.3, y: height * 0.6, level: 'level3', texture: 'abyss_necklace' },
+            { x: width * 0.35, y: height * 0.7, level: 'level4', texture: 'abyss_necklace' }
         ];
     
         levelIcons.forEach(({ x, y, level, texture }) => {
@@ -198,16 +199,12 @@ export class MainLevels extends Phaser.Scene {
             this.storeContainer.add([itemImage, priceText]);
         });
     }
-    
-        
-    
     handleLevelHover(level) {
         if (this.currentLevel !== level) {
             this.currentLevel = level; // Actualizar el nivel actual mostrado
             this.displayRanking(level); // Mostrar el ranking correspondiente al nivel
         }
     }
-    
     displayRanking(level) {
         // Limpiar ranking previo (incluyendo el título del nivel)
         this.children.list.filter(child => child.isRankingItem).forEach(child => child.destroy());

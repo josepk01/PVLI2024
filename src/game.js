@@ -5,6 +5,7 @@ import { Level1 } from './scenes/level1.js';
 import { Level2 } from './scenes/level2.js';
 import { Level3 } from './scenes/level3.js';
 import { OptionsMenu } from './scenes/optionsmenu.js';
+import { Level4 } from './scenes/level4.js';
 const config = {
     type: Phaser.AUTO,
     width: 1600,
@@ -22,7 +23,7 @@ const config = {
             debug: true
         }
     },
-    scene: [Animations, TitleScreen, MainLevels, Level1, Level2, Level3]
+    scene: [Animations, TitleScreen, MainLevels, Level1, Level2, Level3,Level4]
 };
 
 const game = new Phaser.Game(config);

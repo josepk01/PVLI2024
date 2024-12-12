@@ -12,7 +12,13 @@ export class Animations extends Phaser.Scene {
         this.load.image('title_bg', './assets/images/Menu_Img.png');
         this.load.image('fondo__temp_level1', 'assets/images/craftpix-771800-free-war-pixel-art-2d-game-backgrounds/War4/War4.png');
         this.load.image('Hacha', 'assets/images/craftpix-net-100504-free-orc-sprite-sheets-pixel-art/Orc_Warrior/hacha.png');
-        this.load.image('Menu_map', 'assets/images/Mapa_menu.png');   
+        this.load.image('Menu_map', 'assets/images/Mapa_menu.png');
+        
+        this.load.image('Sub_enemy1', 'assets/images/craftpix-net-459799-free-low-level-monsters-pixel-icons-32x32/Icon1.png');
+        this.load.image('Sub_enemy2', 'assets/images/craftpix-net-459799-free-low-level-monsters-pixel-icons-32x32/Icon2.png');
+        this.load.image('Sub_enemy3', 'assets/images/craftpix-net-459799-free-low-level-monsters-pixel-icons-32x32/Icon3.png');
+        this.load.image('Sub_enemy4', 'assets/images/craftpix-net-459799-free-low-level-monsters-pixel-icons-32x32/Icon4.png');
+
         // Cargar el spritesheet completo del cofre
         this.load.spritesheet('chests', 'assets/images/chest_sprite/chestsAll.png', {
             frameWidth: 112,
@@ -124,7 +130,7 @@ export class Animations extends Phaser.Scene {
             key: 'boss_B_run_animation',
             frames: this.anims.generateFrameNumbers('Boss_B_Run', { start: 0, end: 5 }),
             frameRate: 6,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_B_run_attack_animation',
@@ -168,13 +174,13 @@ export class Animations extends Phaser.Scene {
             key: 'boss_W_jump_animation',
             frames: this.anims.generateFrameNumbers('Boss_W_Jump', { start: 0, end: 7 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_W_run_animation',
             frames: this.anims.generateFrameNumbers('Boss_W_Run', { start: 0, end: 5 }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         });
         this.anims.create({
             key: 'boss_W_run_attack_animation',

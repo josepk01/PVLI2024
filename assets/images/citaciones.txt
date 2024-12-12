@@ -7,3 +7,5 @@ https://assetstore.unity.com/packages/2d/environments/pixel-art-platformer-dunge
 https://craftpix.net/freebies/free-war-pixel-art-2d-backgrounds/                                	craftpix-771800-free-war-pixel-art-2d-game-backgrounds
 https://craftpix.net/freebies/free-pixel-art-fantasy-2d-battlegrounds/                          	Pixel Art Fantasy 2D Battlegrounds
 https://lowich.itch.io/pixelart-chests									Chest sprite
+https://darkpixel-kronovi.itch.io/undead-executioner							Boss4
+https://darkpixel-kronovi.itch.io/mecha-golem-free							Boss3

@@ -9,7 +9,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.setCollideWorldBounds(true);
         this.setGravityY(300);
-
+        this.isknockback = false;
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.shootKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
@@ -28,7 +28,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isJumping = false;
 
         // Vidas del jugador (usar las del gameData)
-        this.health = this.maxHealth;
+        this.health = 99999999;//this.maxHealth;
 
         // Daño del jugador
         this.damage = gameData.playerStats.damage;
@@ -44,41 +44,58 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(time) {
-        this.body.setVelocityX(0);
+        if(!this.isknockback)
+        {
+            this.body.setVelocityX(0);
 
-        // Movimiento a la izquierda
-        if (this.cursors.left.isDown || this.keys.left.isDown) {
-            this.body.setVelocityX(-200);
-            this.anims.play('player_move_left_temp', true);
-            this.facingDirection = 'left';
-            this.setFlipX(true);
-            this.isJumping = false;
+            // Movimiento a la izquierda
+            if (this.cursors.left.isDown || this.keys.left.isDown) {
+                this.body.setVelocityX(-200);
+                this.anims.play('player_move_left_temp', true);
+                this.facingDirection = 'left';
+                this.setFlipX(true);
+                this.isJumping = false;
+            }
+            // Movimiento a la derecha
+            else if (this.cursors.right.isDown || this.keys.right.isDown) {
+                this.body.setVelocityX(200);
+                this.anims.play('player_move_right_temp', true);
+                this.facingDirection = 'right';
+                this.setFlipX(false);
+                this.isJumping = false;
+            }
+            // En reposo (sin movimiento)
+            else {
+                this.anims.play('player_idle_temp', true);
+            }
+    
+            // Salto
+            if ((this.cursors.up.isDown || this.keys.up.isDown) && this.body.onFloor()) {
+                this.body.setVelocityY(-660);
+                this.anims.play('player_jump_temp', true);
+                this.isJumping = true;
+            }
+    
+            // Ataque (disparo)
+            if (Phaser.Input.Keyboard.JustDown(this.shootKey) && time > this.lastAttackTime + this.attackCooldown) {
+                this.attack();
+                this.lastAttackTime = time;
+            }
         }
-        // Movimiento a la derecha
-        else if (this.cursors.right.isDown || this.keys.right.isDown) {
-            this.body.setVelocityX(200);
-            this.anims.play('player_move_right_temp', true);
-            this.facingDirection = 'right';
-            this.setFlipX(false);
-            this.isJumping = false;
-        }
-        // En reposo (sin movimiento)
         else {
-            this.anims.play('player_idle_temp', true);
+            if (!this.knockbackStartTime) {
+                // Registrar el tiempo de inicio del knockback
+                this.knockbackStartTime = time;
+            }
+        
+            // Verificar si han pasado 0.5 segundos desde el inicio del knockback
+            if (time - this.knockbackStartTime >= 500) {
+                this.isknockback = false; // Desactivar knockback
+                this.knockbackStartTime = null; // Resetear el tiempo de inicio
+            }
         }
-
-        // Salto
-        if ((this.cursors.up.isDown || this.keys.up.isDown) && this.body.onFloor()) {
-            this.body.setVelocityY(-660);
-            this.anims.play('player_jump_temp', true);
-            this.isJumping = true;
-        }
-
-        // Ataque (disparo)
-        if (Phaser.Input.Keyboard.JustDown(this.shootKey) && time > this.lastAttackTime + this.attackCooldown) {
-            this.attack();
-            this.lastAttackTime = time;
-        }
+        
+            
     }
 
     attack() {
@@ -110,5 +127,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.health <= 0) {
             this.scene.scene.start('mainlevels'); // Cambiar a la escena mainlevels si el jugador muere
         }
+    }
+    knockback(intensidad)
+    {
+        this.body.setVelocityX(intensidad);
+        this.isknockback = true;
     }
 }

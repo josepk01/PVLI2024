@@ -8,10 +8,10 @@
             "health": 10,
             "unlockAttacks": {
                 "attack1": false,
-                "attack2": false,
-                "attack3": false
+                "attack2": false
             },
-            "effectApplied": false
+            "effectApplied": false,
+            "purchased": false
         },
         {
             "type": "abyss_glass",
@@ -21,10 +21,10 @@
             "health": 0,
             "unlockAttacks": {
                 "attack1": false,
-                "attack2": false,
-                "attack3": false
+                "attack2": false
             },
-            "effectApplied": false
+            "effectApplied": false,
+            "purchased": false
         },
         {
             "type": "abyss_lamp",
@@ -34,10 +34,10 @@
             "health": 0,
             "unlockAttacks": {
                 "attack1": false,
-                "attack2": false,
-                "attack3": false
+                "attack2": false
             },
-            "effectApplied": false
+            "effectApplied": false,
+            "purchased": false
         },
         {
             "type": "abyss_mask1",
@@ -47,10 +47,10 @@
             "health": 0,
             "unlockAttacks": {
                 "attack1": false,
-                "attack2": false,
-                "attack3": false
+                "attack2": false
             },
-            "effectApplied": false
+            "effectApplied": false,
+            "purchased": false
         },
         {
             "type": "abyss_mask2",
@@ -60,10 +60,10 @@
             "health": 0,
             "unlockAttacks": {
                 "attack1": false,
-                "attack2": false,
-                "attack3": false
+                "attack2": false
             },
-            "effectApplied": false
+            "effectApplied": false,
+            "purchased": false
         },
         {
             "type": "abyss_mask3",
@@ -73,10 +73,10 @@
             "health": 0,
             "unlockAttacks": {
                 "attack1": false,
-                "attack2": false,
-                "attack3": false
+                "attack2": false
             },
-            "effectApplied": false
+            "effectApplied": false,
+            "purchased": false
         },
         {
             "type": "abyss_orb1",
@@ -86,10 +86,10 @@
             "health": 0,
             "unlockAttacks": {
                 "attack1": false,
-                "attack2": false,
-                "attack3": false
+                "attack2": false
             },
-            "effectApplied": false
+            "effectApplied": false,
+            "purchased": false
         },
         {
             "type": "abyss_orb2",
@@ -99,10 +99,10 @@
             "health": 0,
             "unlockAttacks": {
                 "attack1": false,
-                "attack2": false,
-                "attack3": false
+                "attack2": false
             },
-            "effectApplied": false
+            "effectApplied": false,
+            "purchased": false
         }
     ]
 }
