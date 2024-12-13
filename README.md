@@ -205,6 +205,7 @@ La estructura del proyecto sigue una organización modular:
 
 ## Diagrama de Arquitectura
 
+```plaintext
 ┌──────────────────────────────────┐
 │          game.js                 │
 │ Configuración inicial y escenas  │
@@ -230,8 +231,6 @@ La estructura del proyecto sigue una organización modular:
 │ boss.js, boss2.js, ...           │
 │ level1.js, level2.js, ...        │
 └──────────────────────────────────┘
-
-
 
 
 
