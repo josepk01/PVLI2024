@@ -117,6 +117,7 @@ La estructura del proyecto sigue una organización modular:
 - **Recursos**: Imágenes, animaciones, configuraciones y datos.
 
 ### Estructura de Archivos
+```plaintext
 ├── game.js               # Configuración inicial del juego y carga de escenas.
 ├── gameData.js           # Gestión de datos globales del jugador.
 ├── scenes/
@@ -232,7 +233,7 @@ La estructura del proyecto sigue una organización modular:
 │ level1.js, level2.js, ...        │
 └──────────────────────────────────┘
 
-
+```
 
 
 
