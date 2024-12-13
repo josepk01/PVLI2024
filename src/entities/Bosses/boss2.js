@@ -24,7 +24,7 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
         this.nocomplete = false;
         this.first = true;
         // Crear grupo para balas del boss
-        this.hatches = scene.physics.add.group({
+        this.bullets = scene.physics.add.group({
             classType: Bullet,
             runChildUpdate: true,
         });
@@ -33,7 +33,7 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
         this.screenHeight = scene.scale.height;
         this.screenWidth = scene.scale.width;
 
-        this.specialAttackThresholds = { jump: false, hatches: false };
+        this.specialAttackThresholds = { jump: false, bullets: false };
     }
 
     update(time, player) {
@@ -99,20 +99,14 @@ export default class Boss2 extends Phaser.Physics.Arcade.Sprite {
             this.scene.time.addEvent({
                 delay: index * 500, // Retraso de 0.5 segundos entre cada disparo
                 callback: () => {
-                    const hatchet = this.hatches.get(this.x + offset, this.y, 'Hacha'); // Obtener una bala del grupo
-                    if (hatchet) {
+                    const bullet = this.bullets.get(this.x + offset, this.y, 'Hacha'); // Obtener una bala del grupo
+                    if (bullet) {
                         const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y); // Calcular ángulo hacia el jugador
                         const velocityX = Math.cos(angle) * 300; // Velocidad horizontal
                         const velocityY = Math.sin(angle) * 300; // Velocidad vertical
     
-                        hatchet.resetBullet(this.x + offset, this.y, velocityX, velocityY); // Restablecer la posición y velocidad de la hacha
-                        hatchet.setRotation(angle); // Ajustar la rotación hacia el jugador
-                        this.scene.tweens.add({
-                            targets: hatchet,
-                            angle: 360, // Efecto de giro
-                            duration: 500,
-                            repeat: -1,
-                        });
+                        bullet.resetBullet(this.x + offset, this.y, velocityX, velocityY,angle); // Restablecer la posición y velocidad de la hacha
+ 
                     }
                 },
             });

@@ -1,10 +1,21 @@
 export default class Bullet extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, texture, velocityX, velocityY) {
+    constructor(scene, x, y, texture, velocityX, velocityY,angle) {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
         if(texture ==='Boss_G_Proy')
             this.play('Boss_G_Proy', true)
+        if(texture ==='Hacha')
+        {
+            this.setRotation(angle); // Ajustar la rotación hacia el jugador
+            this.scene.tweens.add({
+                targets: this,
+                angle: 360, // Efecto de giro
+                duration: 500,
+                repeat: -1,
+            });
+        }
+
         // Asegurarse de que la bala no tenga gravedad
         this.body.allowGravity = false;
 
