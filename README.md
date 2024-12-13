@@ -141,7 +141,7 @@ La estructura del proyecto sigue una organización modular:
 ├── data/
 │   ├── items.json        # Configuración de objetos disponibles en la tienda.
 
----
+```plaintext
 
 ## Componentes Principales
 
