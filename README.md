@@ -4,6 +4,7 @@ https://josepk01.github.io/PVLI2024/
 # Game Design Document: Pixel Paradox
 **Desarrollado por**: Bullet Hell  
 **Miembros del equipo**: Jose E. Robles Roca
+
 **Trabajo universitario**
 ## 1. Introducción
 
@@ -96,7 +97,7 @@ El juego contará con un mapa general para seleccionar niveles y un ranking para
 
 ---
 **GDD**
-[Leer el PDF aquí](./gdd mod.pdf)
+[Leer el PDF aquí](gdd_mod.pdf)
 
 ---
 **architecture**
