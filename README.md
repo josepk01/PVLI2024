@@ -4,6 +4,7 @@ https://josepk01.github.io/PVLI2024/
 # Game Design Document: Pixel Paradox
 **Desarrollado por**: Bullet Hell  
 **Miembros del equipo**: Jose E. Robles Roca
+
 **Trabajo universitario**
 ## 1. Introducción
 
@@ -70,11 +71,11 @@ El mundo ha sido corrompido por un ente conocido como el "Maestro de los Bugs", 
 ### 5.1. Menús y HUD
 
 - Como se ve en las imágenes, el jugador tendrá arriba las barras de vida y la barra de carga del especial (en caso de ser dos jugadores estará en ambas esquinas).  
-  ![HUD del Juego](assets/presentacion/level 2.png)
+  ![HUD del Juego](assets/presentacion/level_2.png)
 
 
 - En el menú principal del juego tendremos el mapa en el que el jugador podrá avanzar, un listado con las mejores puntuaciones por mapa y justo debajo estará la tienda donde el jugador podrá comprar y equiparse.  
-  ![Menú Principal](assets/presentacion/mapa ranking tienda.png)
+  ![Menú Principal](assets/presentacion/mapa_ranking_tienda.png)
 
 
 ## 6. Juegos Similares o Inspiración
@@ -96,7 +97,7 @@ El juego contará con un mapa general para seleccionar niveles y un ranking para
 
 ---
 **GDD**
-[Leer el PDF aquí](./gdd mod.pdf)
+[Leer el PDF aquí](gdd_mod.pdf)
 
 ---
 **architecture**
