@@ -140,8 +140,7 @@ La estructura del proyecto sigue una organización modular:
 ├── assets/               # Recursos gráficos y de audio (imágenes, sprites, sonidos).
 ├── data/
 │   ├── items.json        # Configuración de objetos disponibles en la tienda.
-
-```plaintext
+```
 
 ## Componentes Principales
 
