@@ -117,7 +117,28 @@ La estructura del proyecto sigue una organización modular:
 - **Recursos**: Imágenes, animaciones, configuraciones y datos.
 
 ### Estructura de Archivos
-├── game.js # Configuración inicial del juego. ├── gameData.js # Datos persistentes del jugador. ├── scenes/ │ ├── animations.js # Gestión de recursos visuales y animaciones. │ ├── titlescreen.js # Pantalla inicial del juego. │ ├── mainlevels.js # Selección de niveles y tienda. │ ├── levelP.js # Clase base para niveles. │ ├── level1.js # Nivel 1. │ ├── Bosses/ │ ├── boss.js # Jefe del nivel 1. │ ├── boss2.js # Jefe del nivel 2. │ ├── boss3.js # Jefe del nivel 3. │ ├── boss4.js # Jefe del nivel 4. │ ├── SubEnemy.js # Sub-enemigos invocados por algunos jefes. ├── entities/ │ ├── player.js # Clase del jugador. │ ├── Bullet.js # Clase base para proyectiles. │ ├── Hud.js # Interfaz gráfica del jugador. │── assets/ # Recursos gráficos y de audio. │── data/ │ ├── items.json # Configuración de objetos para la tienda.
+├── game.js               # Configuración inicial del juego y carga de escenas.
+├── gameData.js           # Gestión de datos globales del jugador.
+├── scenes/
+│   ├── animations.js     # Precarga de recursos gráficos y animaciones.
+│   ├── titlescreen.js    # Pantalla inicial del juego.
+│   ├── mainlevels.js     # Selección de niveles y tienda del jugador.
+│   ├── levelP.js         # Clase base para niveles.
+│   ├── level1.js         # Implementación del nivel 1.
+│   ├── Bosses/
+│       ├── BossP.js      # Clase base para jefes.
+│       ├── boss.js       # Jefe del nivel 1.
+│       ├── boss2.js      # Jefe del nivel 2.
+│       ├── boss3.js      # Jefe del nivel 3.
+│       ├── boss4.js      # Jefe del nivel 4.
+│   ├── SubEnemy.js       # Clase para sub-enemigos invocados.
+│── entities/
+│   ├── player.js         # Clase del jugador.
+│   ├── Bullet.js         # Clase para proyectiles.
+│   ├── Hud.js            # Interfaz gráfica del jugador (HUD).
+├── assets/               # Recursos gráficos y de audio (imágenes, sprites, sonidos).
+├── data/
+│   ├── items.json        # Configuración de objetos disponibles en la tienda.
 
 ---
 
