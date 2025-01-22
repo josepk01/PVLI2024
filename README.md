@@ -22,13 +22,10 @@ El jugador, un aventurero atrapado en un mundo pixelado, debe restaurar el equil
 
 ### 2.2. Mecánicas Principales
 - **Movimiento y salto**: El jugador puede moverse en 2D (izquierda, derecha, arriba) y realizar saltos, con opción a un doble salto.
-- **Combate con armas**: Uso de armas de disparo con diferentes habilidades y poderes, similar al estilo de "Cuphead".
+- **Combate con armas**: Uso de armas de disparo con diferentes habilidades y poderes, similar al estilo de "Cuphead".(los daños tanto de los jefes como del jugador es 1)
 - **Disparos en ocho direcciones**: Permite cubrir distintos ángulos de ataque.
-- **Parry**: Contrarrestar ataques enemigos y objetos para recargar la barra de superataques.
-- **Habilidades especiales**: Activadas con una barra de energía.
-- **Objetos de curación**: Disponibles en el entorno del nivel.
+- **Habilidades especiales**: Activadas con una barra de energía.(se activa con la z)
 - **Recolección de recursos**: El jugador recoge monedas para comprar armas nuevas.
-- **Cooperativo local**: Modo cooperativo para dos jugadores, con la opción de revivir al compañero caído. Pantalla dividida o compartida.
 - **Niveles temáticos**: Cada nivel está basado en escenarios como casas, bosques o estanterías.
 - **Jefes con patrones de ataque únicos**: Cada jefe tiene ataques específicos.
 - **Desbloqueo de nuevas áreas**: Nuevas zonas y desafíos a medida que se progresa.
@@ -97,7 +94,7 @@ El juego contará con un mapa general para seleccionar niveles y un ranking para
 
 ---
 **GDD**
-[Leer el PDF aquí](gdd_mod.pdf)
+[Leer el PDF aquí](./cosas_secundarias/gdd_mod.pdf)
 
 ---
 **architecture**
