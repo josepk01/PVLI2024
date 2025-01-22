@@ -31,7 +31,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.isJumping = false;
 
         // Vidas del jugador
-        this.health = 99;//this.maxHealth;
+        this.health = 3;//this.maxHealth;
 
         // Daño del jugador
         this.damage = gameData.playerStats.damage;

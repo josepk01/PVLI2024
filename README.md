@@ -206,38 +206,91 @@ La estructura del proyecto sigue una organización modular:
 ## Diagrama de Arquitectura
 
 ```plaintext
-┌──────────────────────────────────┐
-│          game.js                 │
-│ Configuración inicial y escenas  │
-└───────────┬──────────────────────┘
-            │
-            ▼
-┌──────────────────────────────────┐
-│         Escenas                  │
-│ titlescreen.js, mainlevels.js    │
-│ levelP.js, animations.js         │
-└───────────┬──────────────────────┘
-            │
-            ▼
-┌──────────────────────────────────┐
-│         Entidades                │
-│ player.js, Bullet.js, Hud.js     │
-│ SubEnemy.js                      │
-└───────────┬──────────────────────┘
-            │
-            ▼
-┌──────────────────────────────────┐
-│         Jefes y Niveles          │
-│ boss.js, boss2.js, ...           │
-│ level1.js, level2.js, ...        │
-└──────────────────────────────────┘
+┌───────────────────────────┐
+│         GameData          │
+├───────────────────────────┤
+│ - playerMoney: number     │
+│ - purchasedItems: array   │
+│ - playerStats: object     │
+│     - health: number      │
+│     - damage: number      │
+│     - unlockAttacks: obj  │
+├───────────────────────────┤
+│ + loadData(): void        │
+│ + saveData(): void        │
+└───────────────────────────┘
+
+┌───────────────────────────────┐
+│       Player (extends)        │
+│  Phaser.Physics.Arcade.Sprite │
+├───────────────────────────────┤
+│ - maxHealth: number           │
+│ - health: number              │
+│ - damage: number              │
+│ - keys: object                │
+│ - bullets: group              │
+├───────────────────────────────┤
+│ + update(): void              │
+│ + attack(): void              │
+│ + takeDamage(): void          │
+│ + activateSpecial(): void     │
+└───────────────────────────────┘
+
+┌───────────────────────────┐
+│     Boss,1,2,3 (Base)     │
+├───────────────────────────┤
+│ - health: number          │
+│ - bullets: group          │
+│ - specialThresholds: obj  │
+│ - isDead: boolean         │
+├───────────────────────────┤
+│ + update(): void          │
+│ + takeDamage(): void      │
+│ + attack1(): void         │
+│ + attack2(): void         │
+└───────────────────────────┘
+
+┌────────────────────────────┐
+│          HUD               │
+├────────────────────────────┤
+│ - healthBar: object        │
+│ - chargeBar: object        │
+├────────────────────────────┤
+│ + update(player, boss):void│
+└────────────────────────────┘
+
+┌───────────────────────────┐
+│      Bullet (Base)        │
+├───────────────────────────┤
+│ - velocity: vector        │
+│ - owner: string           │
+├───────────────────────────┤
+│ + resetBullet(): void     │
+└───────────────────────────┘
+
+┌───────────────────────────┐
+│        LevelP (Base)      │
+│ (inherits Phaser.Scene)   │
+├───────────────────────────┤
+│ - player: Player          │
+│ - boss: Boss              │
+│ - hud: HUD                │
+│ - timer: number           │
+├───────────────────────────┤
+│ + update(): void          │
+│ + saveScore(): void       │
+│ + playerHit(): void       │
+│ + bossHit(): void         │
+└───────────────────────────┘
+    ▲
+    │
+    │
+┌──────────────┬──────────────┬──────────────┬──────────────┐
+│              │              │              │              │
+│   Level1     │   Level2     │   Level3     │   Level4     │
+│ (inherits)   │ (inherits)   │ (inherits)   │ (inherits)   │
+└──────────────┴──────────────┴──────────────┴──────────────┘
+
+
 
 ```
-
-
-
-Enlace a Github
-https://github.com/josepk01/PVLI2024 (Os envie invitacion al repo a pabgut02@ucm.es y
-toni@ucm.es)
-Enlace a RedesSociales
-Telegram : https://t.me/+kzyodmOK2uthOGVk
