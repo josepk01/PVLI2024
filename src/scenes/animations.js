@@ -8,6 +8,10 @@ export class Animations extends Phaser.Scene {
         // Cargar imágenes
         this.load.image('icono', 'assets/images/icons/icono.png');
         this.load.image('trofeo', 'assets/images/trofeos.png');
+        this.load.image('Boss1_icono', 'assets/images/icons/Boss1_icono.png');
+        this.load.image('Boss2_icono', 'assets/images/icons/Boss2_icono.png');
+        this.load.image('Boss3_icono', 'assets/images/icons/Boss3_icono.png');
+        this.load.image('Boss4_icono', 'assets/images/icons/Boss4_icono.png');
         //Fondos
         this.load.image('title_bg', './assets/images/Menu_Img.png');
         this.load.image('fondo__temp_level1', 'assets/images/craftpix-771800-free-war-pixel-art-2d-game-backgrounds/War4/War4.png');

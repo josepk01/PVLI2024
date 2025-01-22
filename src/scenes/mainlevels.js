@@ -79,10 +79,10 @@ export class MainLevels extends Phaser.Scene {
     
         // Crear iconos de nivel y manejar eventos para mostrar puntuaciones
         const levelIcons = [
-            { x: width * 0.2, y: height * 0.4, level: 'level1', texture: 'abyss_necklace' },
-            { x: width * 0.25, y: height * 0.5, level: 'level2', texture: 'abyss_necklace' },
-            { x: width * 0.3, y: height * 0.6, level: 'level3', texture: 'abyss_necklace' },
-            { x: width * 0.35, y: height * 0.7, level: 'level4', texture: 'abyss_necklace' }
+            { x: width * 0.2, y: height * 0.4, level: 'level1', texture: 'Boss1_icono' },
+            { x: width * 0.25, y: height * 0.5, level: 'level2', texture: 'Boss2_icono' },
+            { x: width * 0.3, y: height * 0.6, level: 'level3', texture: 'Boss3_icono' },
+            { x: width * 0.35, y: height * 0.7, level: 'level4', texture: 'Boss4_icono' }
         ];
     
         levelIcons.forEach(({ x, y, level, texture }) => {
@@ -130,14 +130,6 @@ export class MainLevels extends Phaser.Scene {
         // Crear los elementos de la tienda
         this.displayStoreItems();
     
-        // Crear botones de scroll
-        const scrollUpButton = this.add.text(width * 0.95, height * 0.55, '▲', { fontSize: '32px', fill: '#FFF' })
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scrollStore(-1));
-    
-        const scrollDownButton = this.add.text(width * 0.95, height * 0.95, '▼', { fontSize: '32px', fill: '#FFF' })
-            .setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => this.scrollStore(1));
     }
     
     displayStoreItems() {
