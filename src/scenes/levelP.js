@@ -43,9 +43,14 @@ export default class LevelP extends Phaser.Scene {
         this.add.existing(this.boss);
 
         // Colisiones y superposiciones
-        this.physics.add.collider(this.player, this.boss);
+        //this.physics.add.collider(this.player, this.boss);
+        this.physics.add.overlap(this.player, this.boss, this.playerHitBoss, null, this);
         this.physics.add.overlap(this.player.bullets, this.boss, this.bossHit, null, this);
         this.physics.add.overlap(this.boss.bullets, this.player, this.playerHit, null, this);
+        if(this.boss.sub_enemy)
+        {
+            this.physics.add.overlap(this.boss.sub_enemy, this.player.bullets, this.sub_enemyHit, null, this);
+        }
 
         // Temporizador
         this.timerText = this.add.text(width / 2, 10, 'Tiempo: 0', { fontSize: '24px', fill: '#FFF' }).setOrigin(0.5, 0);
@@ -77,10 +82,26 @@ export default class LevelP extends Phaser.Scene {
             boss.takeDamage();
         }
     }
+    sub_enemyHit(sub_enemy, bullet)
+     {
+        if (sub_enemy.active) {
+            bullet.destroy();
+            sub_enemy.destroy();
+        }
+     }
 
     playerHit(player, bullet) {
         if (player.active && bullet.active) {
             bullet.destroy();
+            player.takeDamage();
+            if (player.health <= 0) {
+                this.saveScore(0);
+            }
+        }
+    }
+    
+    playerHitBoss(player, boss) {
+        if (player.active && boss.active) {
             player.takeDamage();
             if (player.health <= 0) {
                 this.saveScore(0);

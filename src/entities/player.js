@@ -168,19 +168,26 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
     
     takeDamage() {
+        if (this.lastDamageTime && this.scene.time.now - this.lastDamageTime < 750) {
+            return; // Si el daño ocurrió hace menos de 0.75 segundos, salir del método
+        }
+    
+        this.lastDamageTime = this.scene.time.now; // Actualizar el tiempo del último daño
+    
         this.health -= 1;
         console.log(this.health);
         this.setTint(0xff0000); // Aplicar filtro rojo
-
+    
         // Quitar filtro rojo después de 0.5 segundos
         this.scene.time.delayedCall(500, () => {
             this.clearTint();
         });
-
+    
         if (this.health <= 0) {
             this.scene.scene.start('mainlevels'); // Cambiar de escena si muere
         }
     }
+    
 
     knockback(intensidad) {
         this.body.setVelocityX(intensidad);
